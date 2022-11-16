@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import router from '../router'
 
 Vue.use(Vuex)
 
@@ -11,6 +12,9 @@ export default new Vuex.Store({
     token: null,
   },
   getters: {
+    isLogin(state){
+      return state.token? true: false;
+    }
   },
   mutations: {
     SAVE_TOKEN(state, token){
@@ -30,8 +34,10 @@ export default new Vuex.Store({
       })
         .then((response)=>{
           context.commit('SAVE_TOKEN', response.data.key);
+          router.push({ name: 'indexView' })
         })
         .catch((error)=>{
+          // 에러데이터 출력
           console.log(error.response.data);
           for(const errormsg of Object.values(error.response.data)){
             for(const msg of errormsg){
@@ -52,11 +58,10 @@ export default new Vuex.Store({
       })
         .then((response)=>{
           context.commit('SAVE_TOKEN', response.data.key);
-          console.log('로그인 성공!');
-          console.log(this.$router);
-          this.$router.push({name: 'indexView'})
+          router.push({ name: 'indexView' });
         })
         .catch((error)=>{
+          // 에러데이터
           console.log(error.response.data);
           for(const errormsg of Object.values(error.response.data)){
             for(const msg of errormsg){
