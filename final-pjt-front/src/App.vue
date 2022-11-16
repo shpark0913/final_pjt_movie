@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <nav>
+      <router-link :to="{ name: 'indexView' }">메인 페이지</router-link> |
       <router-link :to="{ name: 'signup' }">SignUp</router-link> |
+      <router-link :to="{ name: 'login' }">LogIn</router-link> |
     </nav>
     <router-view/>
   </div>

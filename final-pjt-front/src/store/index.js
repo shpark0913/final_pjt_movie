@@ -15,7 +15,6 @@ export default new Vuex.Store({
   mutations: {
     SAVE_TOKEN(state, token){
       state.token = token;
-      console.log('저장됨ㅋ');
     }
   },
   actions: {
@@ -33,7 +32,37 @@ export default new Vuex.Store({
           context.commit('SAVE_TOKEN', response.data.key);
         })
         .catch((error)=>{
-          console.log(error);
+          console.log(error.response.data);
+          for(const errormsg of Object.values(error.response.data)){
+            for(const msg of errormsg){
+              console.log(msg);
+            }
+          }
+        })
+    },
+
+    logIn(context, payload){
+      axios({
+        method: 'POST',
+        url: `${API_URL}/accounts/login/`,
+        data: {
+          username: payload.username,
+          password: payload.password,
+        }
+      })
+        .then((response)=>{
+          context.commit('SAVE_TOKEN', response.data.key);
+          console.log('로그인 성공!');
+          console.log(this.$router);
+          this.$router.push({name: 'indexView'})
+        })
+        .catch((error)=>{
+          console.log(error.response.data);
+          for(const errormsg of Object.values(error.response.data)){
+            for(const msg of errormsg){
+              console.log(msg);
+            }
+          }
         })
     }
   },
