@@ -101,3 +101,25 @@
 - router , vuex 정리
 
 - authentication 관련 정리
+
+### 3일차(221118)
+
+#### BE
+
+- ERD 완성
+
+- 추가 데이터 ( ... )
+
+- 커뮤니티 앱
+  
+  - User 모델 custom
+
+#### FE
+
+- Movie Detail Page 완성
+
+- 로그인/회원가입 오류 시 에러메시지 띄우기
+
+- 로그아웃 - sessionstorage에서 토큰 삭제
+
+- 로그인 로직 수정 - token을 세션 스토리지에서만 관리...
