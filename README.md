@@ -52,20 +52,54 @@
 
 ### 1일차(221116)
 
-#### Git
+#### Git 협의사항
 
-- 매일 9시에 master branch git pull 받기
+- 매일 9시에 master branch `git pull` 받기
 
-- 각자 branch를 판다, `Frontend` , `Backend`
+- 각자 branch로 switch, `git switch Frontend` , `git switch Backend`
 
 - **BE 담당** : `final-pjt-back` 만 수정
   
   **FE 담당** : `final-pjt-front` 만 수정
 
-- 기능을 완성할 때마다 push
+- 기능을 완성할 때마다 push할 것
+  
+  : `git push origin Frontend` , `git push origin Backend`
 
-- commit message : `[날짜]_[적용사항]`
+- commit message 형식 : `[월일(1116)]_[적용사항]`
 
-- 오후 6시에 각자의 브랜치에서 push, master 브랜치로 이동 후 merge 각자 진행
+- 오후 6시
+  
+  1. 각자의 branch에서 push
+     
+     `git push origin Frontend` , `git push origin Backend`
+  
+  2. master 브랜치로 이동 `git switch master`
+  
+  3. `git pull`
+  
+  4. 브랜치 merge하기
+     
+     `git merge Frontend` , `git merge Backend`
+  
+  5. `git push`
+
+### 2일차(221117)
+
+#### BE
+
+- json 파일 DB에 저장하기
+
+- fixtures 생성하기
+
+- serializer 제작
+
+#### FE
+
+- vue component 구조
+
+- router , vuex 정리
+
+- authentication 관련 정리
 
 
