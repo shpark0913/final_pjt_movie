@@ -39,7 +39,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next)=>{
+  if(sessionStorage.getItem('token')){
+    store.state.token = sessionStorage.getItem('token')
+  }
   const isLoginned = store.state.token;
+
   // 로그인된 상태면? login이랑 signup 빼고 다 갈 수 있음
   if(isLoginned){
     if(to.name !== 'login' && to.name !== 'signup'){

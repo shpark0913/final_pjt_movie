@@ -9,8 +9,13 @@ const API_URL = 'http://127.0.0.1:8000'
 
 export default new Vuex.Store({
   state: {
+    // login 토큰
     token: null,
+    // 로그인, 회원가입 실패 시 문구
     errors: null,
+
+    //movies 데이터
+    movieList: null,
   },
   getters: {
     isLogin(state){
@@ -20,9 +25,15 @@ export default new Vuex.Store({
   mutations: {
     SAVE_TOKEN(state, token){
       state.token = token;
-    }
+      // 세션 스토리지에 토큰을 저장, 세션이 종료되지 않는 이상 로그인 상태 유지
+      sessionStorage.setItem('token', token);
+    },
+    GET_MOVIE_LIST(state, movieList){
+      state.movieList = movieList.slice(1, 10);
+    },
   },
   actions: {
+    // 로그인, 회원가입
     signUp(context, payload){
       axios({
         method: 'POST',
@@ -48,7 +59,6 @@ export default new Vuex.Store({
           // }
         })
     },
-
     logIn(context, payload){
       axios({
         method: 'POST',
@@ -71,6 +81,21 @@ export default new Vuex.Store({
           //     console.log(msg);
           //   }
           // }
+        })
+    },
+
+    // 영화 데이터 불러오기
+    getMovieList(context){
+      axios({
+        url: `${API_URL}/movies/`,
+        method: 'GET',
+      })
+        .then((response)=>{
+          console.log(response.data);
+          context.commit('GET_MOVIE_LIST', response.data);
+        })
+        .catch((error)=>{
+          console.log(error);
         })
     }
   },
