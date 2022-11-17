@@ -10,6 +10,8 @@
 
       <input type="submit" value="로그인">
     </form>
+    
+    <router-link :to="{ name: 'signup' }">회원가입하기</router-link> |
   </div>
 </template>
 
