@@ -59,3 +59,15 @@
 # 1일차 (221116)
 
 #### 모델 구현 ( Movie )
+
+- 필드로 title, release_date, vote_average, overview 등을 가지는 Movie 모델 구현
+
+- API_KEY를 통해 TMDB로부터 json data를 받아서 원하는 data를 DB에 저장, fixtures data 만들기를 목표로 함 -> 실패
+  
+  - 실패한 이유는?
+    
+    - 오류가 많이 남. 특정 영화의 장르를 조회할 때 url마다 interger로 응답하거나 text로 응답하는 등의 차이가 있었음
+  
+  - 계속 도전을 해봤지만 결론적으로 실패했고 view함수를 통해 구현해보기로 방향을 바꿨다.
+  
+  
