@@ -10,6 +10,7 @@ const API_URL = 'http://127.0.0.1:8000'
 export default new Vuex.Store({
   state: {
     token: null,
+    errors: null,
   },
   getters: {
     isLogin(state){
@@ -37,13 +38,14 @@ export default new Vuex.Store({
           router.push({ name: 'indexView' })
         })
         .catch((error)=>{
-          // 에러데이터 출력
+          // 에러데이터
           console.log(error.response.data);
-          for(const errormsg of Object.values(error.response.data)){
-            for(const msg of errormsg){
-              console.log(msg);
-            }
-          }
+          context.state.errors = error.response.data;
+          // for(const errormsg of Object.values(error.response.data)){
+          //   for(const msg of errormsg){
+          //     console.log(msg);
+          //   }
+          // }
         })
     },
 
@@ -63,11 +65,12 @@ export default new Vuex.Store({
         .catch((error)=>{
           // 에러데이터
           console.log(error.response.data);
-          for(const errormsg of Object.values(error.response.data)){
-            for(const msg of errormsg){
-              console.log(msg);
-            }
-          }
+          context.state.errors = error.response.data;
+          // for(const errormsg of Object.values(error.response.data)){
+          //   for(const msg of errormsg){
+          //     console.log(msg);
+          //   }
+          // }
         })
     }
   },
