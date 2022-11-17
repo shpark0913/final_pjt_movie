@@ -12,7 +12,7 @@ class Movie(models.Model):
     vote_average = models.FloatField()
     overview = models.TextField()
     poster_path = models.CharField(max_length=200)
-    movieid = models.IntegerField()
+    movieid = models.IntegerField(primary_key=True)
     backdrop_path = models.CharField(max_length=200)
     # genres = models.TextField()
     genres = models.ManyToManyField(Genre)

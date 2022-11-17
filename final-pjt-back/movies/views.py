@@ -15,7 +15,7 @@ def movie_list(request):
     return Response(serializer.data)
 
 
-
+@api_view(['GET'])
 def movie_detail(request, movieid):
     # movie = Movie.objects.get(movieid=movieid)
     movie = get_object_or_404(Movie, movieid=movieid)
