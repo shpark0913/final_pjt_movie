@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework.response import Response 
 from rest_framework.decorators import api_view
 from django.http import HttpResponse
+from rest_framework import status
 import requests
 
 from .models import Movie, Genre, Review
@@ -23,28 +24,37 @@ def movie_detail(request, movieid):
     serializer = MovieDetailSerializer(movie)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def review_all(request):
-    reviews = get_list_or_404(Review)
-    serializer = ReviewListSerializer(reviews, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET', 'POST'])
+@api_view(['POST', 'GET'])
 def review(request, movieid):
-    movie = get_object_or_404(Movie, movieid=movieid)
     if request.method == 'POST':
-        review_form = ReviewForm(request.POST)
-        if review_form.is_valid():
-            review = review_form.save(commit=False)
-            review.movie = movie
-            review.user = request.user
-            review.save()
-        return HttpResponse()
+        movie = Movie.objects.get(movieid=movieid)
+        serializer = ReviewListSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(movie=movie, user=request.user)
+            return Response(serializer.data)
     elif request.method == 'GET':
-        # reviews = get_list_or_404(Review)
         reviews = get_list_or_404(Review, movie=movieid)
         serializer = ReviewListSerializer(reviews, many=True)
         return Response(serializer.data)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def review_UD(request, review_pk):
+    r = Review.objects.get(pk=review_pk)
+    if request.method == 'GET':
+        serializer = ReviewListSerializer(r)
+        return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        r.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    elif request.method == 'PUT':
+        serializer = ReviewListSerializer(r, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+
 
 
 
