@@ -10,14 +10,16 @@ const API_URL = 'http://127.0.0.1:8000'
 export default new Vuex.Store({
   state: {
     // login 토큰
-    token: null,
+    token: sessionStorage.getItem('token'),
     // 로그인, 회원가입 실패 시 문구
     errors: null,
 
     //movies 데이터
-    movieList: null,
+    movieList: [],
+    movieDetail: null,
   },
   getters: {
+    // 현재 사용자가 로그인 상태인지
     isLogin(state){
       return state.token? true: false;
     }
@@ -28,9 +30,16 @@ export default new Vuex.Store({
       // 세션 스토리지에 토큰을 저장, 세션이 종료되지 않는 이상 로그인 상태 유지
       sessionStorage.setItem('token', token);
     },
+
+
     GET_MOVIE_LIST(state, movieList){
-      state.movieList = movieList.slice(1, 10);
+      state.movieList = movieList.slice(0, 10);
     },
+
+    // 영화 Detail 저장
+    GET_MOVIE_DETAIL(state, movie){
+      state.movieDetail = movie;
+    }
   },
   actions: {
     // 로그인, 회원가입
@@ -84,15 +93,29 @@ export default new Vuex.Store({
         })
     },
 
-    // 영화 데이터 불러오기
+    // 영화 전체 데이터 불러오기
     getMovieList(context){
       axios({
         url: `${API_URL}/movies/`,
         method: 'GET',
       })
         .then((response)=>{
-          console.log(response.data);
+          // console.log(response.data);
           context.commit('GET_MOVIE_LIST', response.data);
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+    },
+    // 영화 디테일 데이터 불러오기
+    getMovieDetail(context, movieId){
+      axios({
+        url: `${API_URL}/movies/${movieId}/`,
+        method: 'GET',
+      })
+        .then((response)=>{
+          // console.log(response);
+          context.commit('GET_MOVIE_DETAIL', response.data)
         })
         .catch((error)=>{
           console.log(error);

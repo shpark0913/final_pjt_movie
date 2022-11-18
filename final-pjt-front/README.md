@@ -66,4 +66,10 @@
 
 - 이에 v-if directive를 이용해 영화 데이터를 받아온 뒤에만 화면에 그릴 수 있도록 했다.
 
-- 
+## 221118
+
+### Movie Detail Page
+
+- 서버에 detail을 받아오는 url을 만들어놓고, 완전 까먹었다...
+
+- url의 movieid params를 이용해 axios로 서버와 통신했다, 서버 측에서 해당 movieid를 가진 영화의 data를 response로 보내준다.

@@ -1,13 +1,11 @@
 <template>
   <div>
     <h2>영화 섹션</h2>
-    <div v-if="movieList">
-      <MovieSectionPoster 
+      <MovieSectionPoster
         v-for="movie in movieList"
         :key="movie.movieid"
         :movie="movie"
       />
-    </div>
   </div>
 </template>
 
@@ -21,8 +19,7 @@ export default {
   },
   computed: {
     movieList(){
-      let tmpMovieList = this.$store.state.movieList;
-      return tmpMovieList;
+      return this.$store.state.movieList;
     }
   },
   methods:{
