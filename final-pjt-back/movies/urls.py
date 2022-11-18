@@ -19,4 +19,9 @@ urlpatterns = [
     # Review 가보자구 2 - GET 방식 -> 해당 movieid의 모든 리뷰 조회, POST 방식 -> 리뷰 등록
     path('<int:movieid>/review/', views.review, name='review'),
     
+    # # Review 가보자구 3
+    # path('<int:movieid>/review/update/', views.review, name='review'),
+    
+    # # Review 가보자구 3
+    # path('<int:movieid>/review/delete/', views.review, name='review'),
 ]
