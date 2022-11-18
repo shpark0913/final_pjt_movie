@@ -17,6 +17,9 @@ export default new Vuex.Store({
     //movies 데이터
     movieList: [],
     movieDetail: null,
+
+    //review 데이터
+    reviewList: [],
   },
   getters: {
     // 현재 사용자가 로그인 상태인지
@@ -35,11 +38,12 @@ export default new Vuex.Store({
     GET_MOVIE_LIST(state, movieList){
       state.movieList = movieList.slice(0, 10);
     },
-
     // 영화 Detail 저장
     GET_MOVIE_DETAIL(state, movie){
       state.movieDetail = movie;
-    }
+    },
+
+    
   },
   actions: {
     // 로그인, 회원가입
@@ -120,7 +124,29 @@ export default new Vuex.Store({
         .catch((error)=>{
           console.log(error);
         })
-    }
+    },
+
+    // 리뷰 작성하기
+    createReview(context, review){
+      axios({
+        url: `${API_URL}/movies/${review.movieid}/review/`,
+        method: 'POST',
+        data: {
+          // vote_average: review.rate,
+          content: review.content,
+        }
+      })
+        .then((response)=>{
+          console.log(response);
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+    },
+    // 리뷰 조회
+    getReviewList(){
+      
+    },
   },
   modules: {
   }
