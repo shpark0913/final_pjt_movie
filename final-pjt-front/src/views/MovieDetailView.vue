@@ -37,10 +37,15 @@ export default {
     getMovieDetail(){
       const movieId = this.$route.params.movieid;
       this.$store.dispatch('getMovieDetail', movieId)
+    },
+    getReviews(){
+      const movieId = this.$route.params.movieid;
+      this.$store.dispatch('getReviews', movieId);
     }
   },
   created(){
     this.getMovieDetail();
+    this.getReviews();
   }
 }
 </script>

@@ -1,12 +1,17 @@
 <template>
   <div>
-    <p>리뷰 내용!</p>
+    <h3>User | {{ review.user }}</h3>
+    <p>평점 | {{ review.vote_average }}</p>
+    <p>{{ review.content }}</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ReviewSectionView'
+  name: 'ReviewSectionItem',
+  props: {
+    review: Object,
+  }
 }
 </script>
 
