@@ -17,6 +17,9 @@ export default new Vuex.Store({
     //movies 데이터
     movieList: [],
     movieDetail: null,
+
+    //review 데이터
+    reviewList: null,
   },
   getters: {
     // 현재 사용자가 로그인 상태인지
@@ -35,11 +38,14 @@ export default new Vuex.Store({
     GET_MOVIE_LIST(state, movieList){
       state.movieList = movieList.slice(0, 10);
     },
-
     // 영화 Detail 저장
     GET_MOVIE_DETAIL(state, movie){
       state.movieDetail = movie;
-    }
+    },
+
+    GET_REVIEWS(state, data){
+      state.reviewList = data;
+    },
   },
   actions: {
     // 로그인, 회원가입
@@ -120,7 +126,43 @@ export default new Vuex.Store({
         .catch((error)=>{
           console.log(error);
         })
-    }
+    },
+
+    // 리뷰 작성하기
+    createReview(context, review){
+      axios({
+        url: `${API_URL}/movies/${review.movieid}/review/`,
+        method: 'POST',
+        data: {
+          vote_average: review.vote_average,
+          content: review.content,
+        },
+        headers: {
+          Authorization: `Token ${ context.state.token }`
+        }
+      })
+        .then((response)=>{
+          console.log(response);
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+    },
+    // 리뷰 조회
+    getReviews(context, movieid){
+      axios({
+        url: `${API_URL}/movies/${movieid}/review/`,
+        method: 'GET',
+      })
+        .then((response)=>{
+          console.log(response);
+          context.commit('GET_REVIEWS', response.data);
+        })
+        .catch((error)=>{
+          console.log(error);
+          context.commit('GET_REVIEWS', '리뷰가 존재하지 않아요');
+        })
+    },
   },
   modules: {
   }

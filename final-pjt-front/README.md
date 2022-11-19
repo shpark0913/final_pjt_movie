@@ -73,3 +73,5 @@
 - 서버에 detail을 받아오는 url을 만들어놓고, 완전 까먹었다...
 
 - url의 movieid params를 이용해 axios로 서버와 통신했다, 서버 측에서 해당 movieid를 가진 영화의 data를 response로 보내준다.
+### Review
+- 
