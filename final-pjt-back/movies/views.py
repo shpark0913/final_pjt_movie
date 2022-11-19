@@ -7,7 +7,7 @@ import requests
 
 from .models import Movie, Genre, Review
 from .forms import ReviewForm
-from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer
+from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer, GenreSerializer
 # Create your views here.
 
 @api_view(['GET'])
@@ -31,7 +31,7 @@ def review(request, movieid):
         serializer = ReviewListSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(movie=movie, user=request.user)
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
     elif request.method == 'GET':
         reviews = get_list_or_404(Review, movie=movieid)
         serializer = ReviewListSerializer(reviews, many=True)
@@ -53,7 +53,7 @@ def review_UD(request, review_pk):
         serializer = ReviewListSerializer(r, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 
