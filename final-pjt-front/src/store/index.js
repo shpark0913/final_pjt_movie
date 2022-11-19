@@ -33,7 +33,10 @@ export default new Vuex.Store({
       // 세션 스토리지에 토큰을 저장, 세션이 종료되지 않는 이상 로그인 상태 유지
       sessionStorage.setItem('token', token);
     },
-
+    LOGOUT(state){
+      state.token = null,
+      router.push({ name: 'login' });
+    },
 
     GET_MOVIE_LIST(state, movieList){
       state.movieList = movieList.slice(0, 10);
@@ -97,6 +100,10 @@ export default new Vuex.Store({
           //   }
           // }
         })
+    },
+    logout(context){
+      sessionStorage.removeItem('token');
+      context.commit('LOGOUT');
     },
 
     // 영화 전체 데이터 불러오기

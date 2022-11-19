@@ -2,7 +2,7 @@
   <div id="app">
     <nav>
       <router-link v-if="isLoggined" :to="{ name: 'indexView' }">메인 페이지</router-link> |
-      <!-- <span @click="logout"></span> -->
+      <span v-if="isLoggined" @click="logout" id="logout">로그아웃 |</span>
       <router-link v-if="!isLoggined" :to="{ name: 'login' }">LogIn</router-link> |
     </nav>
     <router-view/>
@@ -16,6 +16,11 @@ export default {
       return this.$store.state.token
     }
   },
+  methods: {
+    logout(){
+      this.$store.dispatch('logout');
+    }
+  }
 }
 </script>
 
@@ -39,5 +44,9 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+#logout{
+  cursor: pointer;
 }
 </style>
