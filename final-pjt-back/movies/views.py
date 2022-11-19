@@ -3,12 +3,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import HttpResponse
 from rest_framework import status
-import requests
-
+import requests, random
 from .models import Movie, Genre, Review
-from .forms import ReviewForm
-from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer, GenreSerializer
-# Create your views here.
+from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer
 
 @api_view(['GET'])
 def movie_list(request):
@@ -23,6 +20,7 @@ def movie_detail(request, movieid):
     movie = get_object_or_404(Movie, movieid=movieid)
     serializer = MovieDetailSerializer(movie)
     return Response(serializer.data)
+
 
 @api_view(['POST', 'GET'])
 def review(request, movieid):
@@ -56,13 +54,19 @@ def review_UD(request, review_pk):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+def action10(request):
+    genre = get_object_or_404(Genre, pk=28)
+    movies = random.sample(list(genre.movie_set.all()[:100]),10)
+    serializer = MovieListSerializer(movies, many=True)
+    return Response(serializer.data)
 
-
-
-
-
-
-
+@api_view(['GET'])
+def romance10(request):
+    genre = get_object_or_404(Genre, pk=10749)
+    movies = random.sample(list(genre.movie_set.all()[:100]),10)
+    serializer = MovieListSerializer(movies, many=True)
+    return Response(serializer.data)
 
 
 API_KEY = '3e6bef93583f44f23148ae1a83169eb1'
