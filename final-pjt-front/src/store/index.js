@@ -19,7 +19,7 @@ export default new Vuex.Store({
     movieDetail: null,
 
     //review 데이터
-    reviewList: [],
+    reviewList: null,
   },
   getters: {
     // 현재 사용자가 로그인 상태인지
@@ -43,7 +43,9 @@ export default new Vuex.Store({
       state.movieDetail = movie;
     },
 
-    
+    GET_REVIEWS(state, data){
+      state.reviewList = data;
+    },
   },
   actions: {
     // 로그인, 회원가입
@@ -132,8 +134,11 @@ export default new Vuex.Store({
         url: `${API_URL}/movies/${review.movieid}/review/`,
         method: 'POST',
         data: {
-          // vote_average: review.rate,
+          vote_average: review.vote_average,
           content: review.content,
+        },
+        headers: {
+          Authorization: `Token ${ context.state.token }`
         }
       })
         .then((response)=>{
@@ -144,8 +149,19 @@ export default new Vuex.Store({
         })
     },
     // 리뷰 조회
-    getReviewList(){
-      
+    getReviews(context, movieid){
+      axios({
+        url: `${API_URL}/movies/${movieid}/review/`,
+        method: 'GET',
+      })
+        .then((response)=>{
+          console.log(response);
+          context.commit('GET_REVIEWS', response.data);
+        })
+        .catch((error)=>{
+          console.log(error);
+          context.commit('GET_REVIEWS', '리뷰가 존재하지 않아요');
+        })
     },
   },
   modules: {

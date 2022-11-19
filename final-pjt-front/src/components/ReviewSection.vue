@@ -1,22 +1,31 @@
 <template>
   <div>
     <h3>영화 리뷰를 담을 공간!</h3>
-    <form @submit.prevent="createReview">
-      <label for="my-review">리뷰 작성하기</label>
-      <input type="text" id="my-review" placeholder="나의 리뷰 작성!" required><br>
+    <div id="writeReview">
+      <form @submit.prevent="createReview">
+        <label for="my-review">리뷰 작성하기</label>
+        <textarea v-model="content" id="my-review" cols="30" rows="10" placeholder="리뷰 작성!"></textarea>
+        <br>
+        <input v-model="vote_average" type="radio" name="rate" value="1" id="1"><label for="1">⭐</label>
+        <input v-model="vote_average" type="radio" name="rate" value="2" id="2"><label for="2">⭐⭐</label>
+        <input v-model="vote_average" type="radio" name="rate" value="3" id="3"><label for="3">⭐⭐⭐</label>
+        <input v-model="vote_average" type="radio" name="rate" value="4" id="4"><label for="4">⭐⭐⭐⭐</label>
+        <input v-model="vote_average" type="radio" name="rate" value="5" id="5" checked><label for="5">⭐⭐⭐⭐⭐</label><br>
 
-      <input type="radio" name="rate" value="1" id="1"><label for="1">1</label>
-      <input type="radio" name="rate" value="2" id="2"><label for="2">2</label>
-      <input type="radio" name="rate" value="3" id="3"><label for="3">3</label>
-      <input type="radio" name="rate" value="4" id="4"><label for="4">4</label>
-      <input type="radio" name="rate" value="5" id="5" checked><label for="5">5</label><br>
-
-      <input type="submit" value="작성하기">
-    </form>
+        <input type="submit" value="작성하기">
+      </form>
+    </div>
     <hr>
-    <ReviewSectionItem />
-    <ReviewSectionItem />
-    <ReviewSectionItem />
+    <div v-if="reviewList === '리뷰가 존재하지 않아요'">
+      {{ reviewList }}
+    </div>
+    <div v-else>
+      <ReviewSectionItem 
+        v-for="review in reviewList"
+        :key="review.id"
+        :review="review"
+      />
+    </div>
   </div>
 </template>
 
@@ -31,27 +40,34 @@ export default {
   components: {
     ReviewSectionItem,
   },
+  data(){
+    return{
+      content: null,
+      vote_average: 5,
+      movieid: this.movie.movieid,
+    }
+  },
+  computed: {
+    reviewList(){
+      return this.$store.state.reviewList
+    }
+  },
   methods: {
     createReview(){
-      // 사용자가 별점을 매겼을 때 그 값을 받아오는 코드, 그런데 아직 Model에서 구현이 안됨
-      const rateBtn = document.querySelectorAll('input[name="rate"]');
-      let rate = 0;
-      for(const btn of rateBtn){
-        if(btn.checked){
-          rate = +btn.value;
-          break;
-        }
-      }
-      const reviewContent = document.querySelector('#my-review').value;
       const review = {
-        rate: rate,
-        content: reviewContent,
-        movieid: this.movie.movieid,
+        vote_average: this.vote_average,
+        content: this.content,
+        movieid: this.movieid,
       }
       this.$store.dispatch('createReview', review);
+      this.content = null;
+      this.vote_average = 5;
     },
 
   },
+  // created(){
+  //   this.getReviews();
+  // },
 
 }
 </script>

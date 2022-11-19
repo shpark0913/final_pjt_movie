@@ -2,6 +2,7 @@
   <div id="app">
     <nav>
       <router-link v-if="isLoggined" :to="{ name: 'indexView' }">메인 페이지</router-link> |
+      <!-- <span @click="logout"></span> -->
       <router-link v-if="!isLoggined" :to="{ name: 'login' }">LogIn</router-link> |
     </nav>
     <router-view/>
