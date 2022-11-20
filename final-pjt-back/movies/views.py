@@ -4,16 +4,17 @@ from rest_framework.decorators import api_view
 from django.http import HttpResponse
 from rest_framework import status
 import requests, random
-from .models import Movie, Genre, Review
+from .models import Movie, Genre, Review, Genrename
 from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer
 
+# 전체 영화 조회
 @api_view(['GET'])
 def movie_list(request):
     movies = get_list_or_404(Movie)
     serializer = MovieListSerializer(movies, many=True)
     return Response(serializer.data)
 
-
+# 단일 영화 조회
 @api_view(['GET'])
 def movie_detail(request, movieid):
     # movie = Movie.objects.get(movieid=movieid)
@@ -21,7 +22,7 @@ def movie_detail(request, movieid):
     serializer = MovieDetailSerializer(movie)
     return Response(serializer.data)
 
-
+# GET : 특정 영화 전체 review 조회  /  POST : 특정 영화의 review 작성
 @api_view(['POST', 'GET'])
 def review(request, movieid):
     if request.method == 'POST':
@@ -35,7 +36,7 @@ def review(request, movieid):
         serializer = ReviewListSerializer(reviews, many=True)
         return Response(serializer.data)
 
-
+# GET : 특정 review 조회  /  PUT : 특정 review 수정  /  DELETE : 특정 review 삭제
 @api_view(['GET', 'PUT', 'DELETE'])
 def review_UD(request, review_pk):
     r = Review.objects.get(pk=review_pk)
@@ -54,21 +55,163 @@ def review_UD(request, review_pk):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+
+# DB 에 저장되어 있는 영화 중 장르에 따라 10개(10개 미만일 수도 있음) 추천 
 @api_view(['GET'])
-def action10(request):
-    genre = get_object_or_404(Genre, pk=28)
-    movies = random.sample(list(genre.movie_set.all()[:100]),10)
+def recommend10(request, genre_pk):
+    genre = get_object_or_404(Genre, pk=genre_pk)
+    sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+    movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
     serializer = MovieListSerializer(movies, many=True)
     return Response(serializer.data)
+    
+# @api_view(['GET'])
+# def action10(request):
+#     genre = get_object_or_404(Genre, pk=28)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
 
-@api_view(['GET'])
-def romance10(request):
-    genre = get_object_or_404(Genre, pk=10749)
-    movies = random.sample(list(genre.movie_set.all()[:100]),10)
-    serializer = MovieListSerializer(movies, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# def romance10(request):
+#     genre = get_object_or_404(Genre, pk=10749)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def fantasy10(request):
+#     genre = get_object_or_404(Genre, pk=14)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def ani10(request):
+#     genre = get_object_or_404(Genre, pk=16)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def drama10(request):
+#     genre = get_object_or_404(Genre, pk=18)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def fear10(request):
+#     genre = get_object_or_404(Genre, pk=27)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def comedy10(request):
+#     genre = get_object_or_404(Genre, pk=35)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def history10(request):
+#     genre = get_object_or_404(Genre, pk=36)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def west10(request):
+#     genre = get_object_or_404(Genre, pk=37)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def thrill10(request):
+#     genre = get_object_or_404(Genre, pk=53)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def crime10(request):
+#     genre = get_object_or_404(Genre, pk=80)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def docu10(request):
+#     genre = get_object_or_404(Genre, pk=99)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def sf10(request):
+#     genre = get_object_or_404(Genre, pk=878)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def mystery10(request):
+#     genre = get_object_or_404(Genre, pk=9648)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def music10(request):
+#     genre = get_object_or_404(Genre, pk=10402)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def family10(request):
+#     genre = get_object_or_404(Genre, pk=10751)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def war10(request):
+#     genre = get_object_or_404(Genre, pk=10752)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def tvmovie10(request):
+#     genre = get_object_or_404(Genre, pk=10770)
+#     sampleNum = min(10, len(list(genre.movie_set.all()[:100])))
+#     movies = random.sample(list(genre.movie_set.all()[:100]), sampleNum)
+#     serializer = MovieListSerializer(movies, many=True)
+#     return Response(serializer.data)
+###################################################################
 
 
+# 초반 fixtures data 만들기 위한 함수
 API_KEY = '3e6bef93583f44f23148ae1a83169eb1'
 def get_movie_datas(request):
     for i in range(1, 30):
@@ -96,8 +239,10 @@ def get_genre(request):
     genres = requests.get(request_url).json()
     for genre in genres['genres']:
         g = Genre()
+        print(genre)
         g.genreid = genre['id']
         g.name = genre['name']
         if g.genreid and g.name:
             g.save()
     return HttpResponse()
+###################################################################
