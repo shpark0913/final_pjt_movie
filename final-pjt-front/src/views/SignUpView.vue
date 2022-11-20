@@ -13,6 +13,10 @@
 
       <input type="submit" value="회원가입">
     </form>
+
+    <ul v-if="errorMsg.length">
+      <li v-for="(msg, idx) in errorMsg" :key="idx">{{ msg }}</li>
+    </ul>
   </div>
 </template>
 
@@ -26,6 +30,11 @@ export default {
       password2: null,
     }
   },
+  computed: {
+    errorMsg(){
+      return this.$store.state.errors;
+    }
+  },
   methods: {
     signUp(){
       const payload = {
@@ -33,12 +42,17 @@ export default {
         password1: this.password1,
         password2: this.password2,
       }
+
+      this.$store.commit('RESET_ERROR_MSG');
       this.$store.dispatch('signUp', payload)
 
       this.username = null
       this.password1 = null
       this.password2 = null
     }
+  },
+  created(){
+    this.$store.commit('RESET_ERROR_MSG');
   }
 }
 </script>
