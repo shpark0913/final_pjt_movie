@@ -10,7 +10,11 @@
 
       <input type="submit" value="로그인">
     </form>
-    
+
+    <ul v-if="errorMsg.length">
+      <li v-for="(msg, idx) in errorMsg" :key="idx">{{ msg }}</li>
+    </ul>
+
     <router-link :to="{ name: 'signup' }">회원가입하기</router-link> |
   </div>
 </template>
@@ -24,6 +28,11 @@ export default {
       password: null,
     }
   },
+  computed: {
+    errorMsg(){
+      return this.$store.state.errors;
+    }
+  },
   methods: {
     logIn(){
       const payload = {
@@ -31,11 +40,15 @@ export default {
         password: this.password
       }
 
+      this.$store.commit('RESET_ERROR_MSG');
       this.$store.dispatch('logIn', payload);
 
       this.username = null;
       this.password = null;
     }
+  },
+  created(){
+    this.$store.commit('RESET_ERROR_MSG');
   }
 }
 </script>

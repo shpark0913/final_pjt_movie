@@ -73,5 +73,11 @@
 - 서버에 detail을 받아오는 url을 만들어놓고, 완전 까먹었다...
 
 - url의 movieid params를 이용해 axios로 서버와 통신했다, 서버 측에서 해당 movieid를 가진 영화의 data를 response로 보내준다.
-### Review
-- 
+
+### Review - create
+
+- 리뷰 작성 form 태그를 만들었다. 입력값으롯는 사용자의 리뷰 내용과 별점이다. 값들은 v-model directive를 활용해 값을 data에 저장한다.
+
+- 별점을 시각적으로 주는 것은 나중에 구현하고, 우선은 radio 버튼을 통해 평점을 매긴다.
+
+- 리뷰와 별점, 그리고 현재 영화의 id를 객체에 담아 createReview를 진행한다.

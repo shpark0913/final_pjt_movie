@@ -4,19 +4,19 @@
     <div id="writeReview">
       <form @submit.prevent="createReview">
         <label for="my-review">리뷰 작성하기</label>
-        <textarea v-model="content" id="my-review" cols="30" rows="10" placeholder="리뷰 작성!"></textarea>
+        <textarea required v-model="content" id="my-review" cols="30" rows="10" placeholder="리뷰 작성!"></textarea>
         <br>
         <input v-model="vote_average" type="radio" name="rate" value="1" id="1"><label for="1">⭐</label>
         <input v-model="vote_average" type="radio" name="rate" value="2" id="2"><label for="2">⭐⭐</label>
         <input v-model="vote_average" type="radio" name="rate" value="3" id="3"><label for="3">⭐⭐⭐</label>
         <input v-model="vote_average" type="radio" name="rate" value="4" id="4"><label for="4">⭐⭐⭐⭐</label>
         <input v-model="vote_average" type="radio" name="rate" value="5" id="5" checked><label for="5">⭐⭐⭐⭐⭐</label><br>
-
+        <br>
         <input type="submit" value="작성하기">
       </form>
     </div>
     <hr>
-    <div v-if="reviewList === '리뷰가 존재하지 않아요'">
+    <div v-if="typeof reviewList === 'string'">
       {{ reviewList }}
     </div>
     <div v-else>
@@ -24,6 +24,7 @@
         v-for="review in reviewList"
         :key="review.id"
         :review="review"
+        @edit-review="editReview"
       />
     </div>
   </div>
@@ -49,7 +50,7 @@ export default {
   },
   computed: {
     reviewList(){
-      return this.$store.state.reviewList
+      return this.$store.state.reviewList;
     }
   },
   methods: {
@@ -63,12 +64,12 @@ export default {
       this.content = null;
       this.vote_average = 5;
     },
-
+    editReview(review){
+      console.log(review);
+      this.content = review.content;
+      this.vote_average = review.vote_average;
+    },
   },
-  // created(){
-  //   this.getReviews();
-  // },
-
 }
 </script>
 
