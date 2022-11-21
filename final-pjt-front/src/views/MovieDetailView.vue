@@ -5,7 +5,7 @@
       <img :src="poster_path">
       <p>개봉일 | {{ movie.release_date }}</p>
       <p>평점 | {{ movie.vote_average }}</p>
-      <p>장르 | <span v-for="genre in movie.genres" :key="genre">{{ genre }} </span></p>
+      <p>장르 | <span v-for="genre in movie.genres" :key="genre.genreid">{{ genre.name }} </span></p>
       <p>{{ movie.overview }}</p>
       <br>
       
