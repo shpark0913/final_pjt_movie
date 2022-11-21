@@ -7,6 +7,7 @@ import requests, random
 from .models import Movie, Genre, Review, Genrename
 from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer
 from django.contrib.auth import get_user_model
+import json
 
 API_KEY = '3e6bef93583f44f23148ae1a83169eb1'
 
@@ -73,12 +74,17 @@ def profile(request, username):
     review_like = []
     review_unlike = []
     for review in reviews:
+        m = Movie.objects.get(movieid=review.movie_id)
+        movieObj = {'movieid': m.movieid, 'moviename': m.title, 'poster_path': m.poster_path}
+        reviewObj = {'movieid': review.movie_id, 'content': review.content}
         if review.vote_average:
-            movie_like.append(review.movie_id)
-            review_like.append({'movieid': review.movie_id, 'content': review.content})
+            # movie_like.append(review.movie_id)
+            movie_like.append(movieObj)
+            review_like.append(reviewObj)
         else:
-            movie_unlike.append(review.movie_id)
-            review_unlike.append({'movieid': review.movie_id, 'content': review.content})
+            # movie_unlike.append(review.movie_id)
+            movie_unlike.append(movieObj)
+            review_unlike.append(reviewObj)
     return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'like_reviews': review_like, 'unlike_reviews': review_unlike})
 
 # tmdb에서 추천 영화 받기
