@@ -6,6 +6,7 @@ from rest_framework import status
 import requests, random
 from .models import Movie, Genre, Review, Genrename
 from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer
+from django.contrib.auth import get_user_model
 
 # 전체 영화 조회
 @api_view(['GET'])
@@ -54,6 +55,11 @@ def review_UD(request, review_pk):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 
+# username 받으면 user의 pk 반환하기
+@api_view(['GET'])
+def wantuserpk(request, username):
+    u = get_object_or_404(get_user_model(), username=username)
+    return Response({'user_pk': u.pk})
 
 
 # DB 에 저장되어 있는 영화 중 장르에 따라 10개(10개 미만일 수도 있음) 추천 
