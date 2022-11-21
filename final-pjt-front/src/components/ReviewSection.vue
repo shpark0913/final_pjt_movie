@@ -35,7 +35,7 @@
       <div id="writeReview">
         <form @submit.prevent="createReview">
           <label for="my-review">리뷰 작성하기</label><br>
-          <textarea required v-model="content" id="my-review" cols="30" rows="10" placeholder="리뷰 작성!"></textarea><br><br>
+          <textarea required v-model="content" id="my-review" cols="30" rows="10"></textarea><br><br>
   
           <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
           <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
@@ -110,11 +110,11 @@ export default {
         vote_average: this.vote_average,
         content: this.content,
         movieid: this.movieid,
+        username: this.$store.state.username,
       }
-      console.log(review);
       this.$store.dispatch('createReview', review);
       this.content = null;
-      this.vote_average = null;
+      this.vote_average = true;
     },
     updateReview(){
       const review = {
@@ -122,6 +122,7 @@ export default {
         vote_average: this.vote_average,
         movieid: this.movieid,
         reviewid: this.myReview.id,
+        username: this.$store.state.username,
       }
       this.$store.dispatch('updateReview', review);
       this.toggleUpdate();
@@ -131,7 +132,9 @@ export default {
         movieid: this.movieid,
         reviewid: this.myReview.id,
       }
-      this.$store.dispatch('deleteReview', review)
+      this.$store.dispatch('deleteReview', review);
+      this.content = null;
+      this.vote_average = true;
     },
     toggleUpdate(){
       this.isUpdating = !this.isUpdating;

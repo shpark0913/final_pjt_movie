@@ -214,6 +214,7 @@ export default new Vuex.Store({
         data: {
           vote_average: review.vote_average,
           content: review.content,
+          username: review.username,
         },
         headers: {
           Authorization: `Token ${ context.state.token }`
@@ -262,6 +263,10 @@ export default new Vuex.Store({
         data: {
           content: review.content,
           vote_average: review.vote_average,
+          username: review.username,
+        },
+        headers: {
+          Authorization: `Token ${ context.state.token }`
         }
       })
         .then((response)=>{

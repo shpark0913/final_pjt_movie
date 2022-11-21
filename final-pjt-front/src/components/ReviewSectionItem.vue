@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <p>{{ review }}</p> -->
-    <h3>User | {{ review?.user }}</h3>
+    <h3>User | {{ review?.username }}</h3>
     <p v-if="review?.vote_average === true ">평점 | 재밌어요😀</p>
     <p v-else>평점 | 별로에요🤮</p>
     <p>평가 | {{ review?.content }}</p>
