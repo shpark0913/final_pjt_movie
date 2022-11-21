@@ -39,15 +39,13 @@ urlpatterns = [
     # username 받으면 user의 pk 반환하기
     path('user/<str:username>/', views.wantuserpk, name='wantuserpk'),
     
-    # username 받고 그 user가 좋아요, 싫어요 한 영화 출력
+    # username 받고 그 user가 좋아요, 싫어요 한 영화와 작성한 댓글 출력
     path('user/<str:username>/like/', views.like, name='like'),
     
-    # username 받고 그 user가 좋아요, 싫어요 한 댓글 출력
-    path('user/<str:username>/like/review/', views.like_review, name='like_review'),
-
+    # tmdb에서 추천 영화 받기
+    path('<int:movieid>/recommendations/', views.recommend, name='recommend'),
 
     # 초반 fixtures data 만들기 위한 경로
     path('get_movie_datas/', views.get_movie_datas, name='get_movie_datas'),
     path('get_genre/', views.get_genre, name='get_genre'),
-    
 ]

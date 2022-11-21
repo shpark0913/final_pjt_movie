@@ -17,7 +17,7 @@ class MovieListSerializer(serializers.ModelSerializer):
 
 
 class ReviewListSerializer(serializers.ModelSerializer):
-    
+    username = serializers.CharField(source='user.username')
     class Meta:
         model = Review
         fields = '__all__'

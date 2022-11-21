@@ -8,6 +8,8 @@ from .models import Movie, Genre, Review, Genrename
 from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer
 from django.contrib.auth import get_user_model
 
+API_KEY = '3e6bef93583f44f23148ae1a83169eb1'
+
 # 전체 영화 조회
 @api_view(['GET'])
 def movie_list(request):
@@ -61,33 +63,48 @@ def wantuserpk(request, username):
     u = get_object_or_404(get_user_model(), username=username)
     return Response({'user_pk': u.pk})
 
-# username 받고 그 user가 좋아요, 싫어요 한 영화 출력
+# username 받고 그 user가 좋아요, 싫어요 한 영화와 작성한 댓글 출력
 @api_view(['GET'])
 def like(request, username):
     u = get_object_or_404(get_user_model(), username=username)
     reviews = get_list_or_404(Review, user_id=u.pk)
     movie_like = []
     movie_unlike = []
-    for review in reviews:
-        if review.vote_average:
-            movie_like.append(review.movie_id)
-        else:
-            movie_unlike.append(review.movie_id)
-    return Response({'likes': movie_like, 'unlikes': movie_unlike})
-
-# username 받고 그 user가 좋아요, 싫어요 한 댓글 출력
-@api_view(['GET'])
-def like_review(request, username):
-    u = get_object_or_404(get_user_model(), username=username)
-    reviews = get_list_or_404(Review, user_id=u.pk)
     review_like = []
     review_unlike = []
     for review in reviews:
         if review.vote_average:
+            movie_like.append(review.movie_id)
             review_like.append({'movieid': review.movie_id, 'content': review.content})
         else:
+            movie_unlike.append(review.movie_id)
             review_unlike.append({'movieid': review.movie_id, 'content': review.content})
-    return Response({'like_reviews': review_like, 'unlike_reviews': review_unlike})
+    return Response({'likes': movie_like, 'unlikes': movie_unlike, 'like_reviews': review_like, 'unlike_reviews': review_unlike})
+
+# tmdb에서 추천 영화 받기
+@api_view(['GET'])
+def recommend(request, movieid):
+    request_url = f"https://api.themoviedb.org/3/movie/{movieid}/recommendations?api_key={API_KEY}&language=ko-KR&page=1"
+    movies = requests.get(request_url).json()
+    
+    # 받아온 movie들 DB에 추가 저장
+    for movie in movies['results']:
+        movie_instance = Movie()
+        movie_instance.title  = movie['title']
+        movie_instance.movieid  = movie['id']
+        movie_instance.backdrop_path = movie['backdrop_path']
+        movie_instance.release_date = movie.get('release_date')
+        movie_instance.vote_average = movie['vote_average']
+        movie_instance.overview = movie['overview']
+        movie_instance.poster_path = movie['poster_path']
+        if movie_instance.overview and movie_instance.release_date and movie_instance.poster_path and movie_instance.backdrop_path:
+            movie_instance.save()
+            for genre in movie.get('genre_ids'):
+                movie_instance.genres.add(genre)
+    
+    m = movies['results']
+    return Response({'recommendations': m})
+
 
 # DB 에 저장되어 있는 영화 중 장르에 따라 10개(10개 미만일 수도 있음) 추천 
 @api_view(['GET'])
@@ -245,7 +262,6 @@ def recommend10(request, genre_pk):
 
 
 # 초반 fixtures data 만들기 위한 함수
-API_KEY = '3e6bef93583f44f23148ae1a83169eb1'
 def get_movie_datas(request):
     for i in range(1, 30):
         request_url = f"https://api.themoviedb.org/3/movie/popular?api_key={API_KEY}&language=ko-KR&page={i}"
