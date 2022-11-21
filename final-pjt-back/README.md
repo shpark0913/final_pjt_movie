@@ -1,3 +1,4 @@
+---
 # 👍 0일차 (221115)
 
 ### 1. **앱 만들기**
@@ -8,28 +9,21 @@
 ### 2. 기본 설정
 
 - 기본 User 모델 ****변경
-  
   - AUTH_USER_MODEL을 **accounts.User** 모델로 변경
-
 - AJAX 요청 준비
-  
   - axios 설치
-
 - CORS (Cross-Origin Resource Sharing)
-  
   - HTTP Response Header 중에서 **Access-Control-Allow_Origin** 사용
-    
     - 이를 위해 djnago-cors-headers 설치
-    
     - settings.py에 추가 설정
-      
       - INSTALLED_APPS 에 corsheaders 추가
-      
+
       - MIDDLEWARE에 corsheaders.middleware.CorsMiddleware, django.middleware.common.CommonMiddleware 추가
-      
+
       - CORS_ALLOWED_ORIGINS에 교차 출처 자원 공유를 위해
-        
+
         local host Domain을 등록
+
 
 ### 3. 회원가입
 
@@ -46,11 +40,7 @@
 - dj-rest-auth 사용하기 위해 설치함
   - Registration 기능을 사용하기 위해 django-allauth 설치
   - INSTALLED_APPS에 관련 App들 추가하고 SITE_ID = 1 설정
-    - 현재 프로젝트가 첫번째 사이트임을 알 수 있다. 
-
-
-
-
+    - 현재 프로젝트가 첫번째 사이트임을 알 수 있다.
 
 ---
 
@@ -100,10 +90,6 @@
   
   - view 함수를 통해 구현해보기로 함
 
-
-
-
-
 ---
 
 # 👍 2일차 (221117)
@@ -132,10 +118,6 @@
 - serializer를 통해 Vue에 json 형태로 data를 넘겨주기로 결정
   - postman을 사용해 전체 영화 조회, 단일 영화 조회가 성공적으로 되는 것을 확인
 
-
-
-
-
 ---
 
 # 👍 3일차 (221118)
@@ -159,10 +141,6 @@
     - 이 중 serializer로 구현한 방법 선택
       - R, U, D 기능 구현이 더 간편
 
-
-
-
-
 ---
 
 # 👍 4일차 (221119)
@@ -176,8 +154,25 @@
 - Vue에서 ture, false 의 2가지로 평점을 관리하는게 편하겠다는 의견 수용
 - 기존 FloatField에서 BooleanField로 변경
 
+---
 
+# 👍 5일차 (221120)
 
+### 목표
 
+1. FE와 중간 점검 및 방향 협의
 
 ---
+
+# 👍 6일차 (221121)
+
+### 목표
+
+1. Username을 이용해 User의 pk를 조회할 수 있는 함수 만들기
+2. User의 Profile 구현
+3. User의 Follow 구현
+4. 2, 3을 구현하기 위한 ERD 수정
+
+### Username을 이용해 User의 pk 조회하기
+
+- `user/str:username/` 라는 새로운 경로를 지정해 view 함수를 생성
