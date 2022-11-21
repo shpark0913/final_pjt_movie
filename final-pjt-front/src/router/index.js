@@ -6,6 +6,7 @@ import IndexView from '@/views/IndexView'
 import SignUpView from '@/views/SignUpView'
 import LogInView from '@/views/LogInView'
 import MovieDetailView from '@/views/MovieDetailView'
+import ProfileView from '@/views/ProfileView'
 import NotFoundView from '@/views/NotFoundView'
 
 
@@ -31,6 +32,11 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: SignUpView,
+  },
+  {
+    path: '/profile/:username',
+    name: 'profile',
+    component: ProfileView
   },
   // {
   //   path: '/about',

@@ -2,8 +2,8 @@
   <div id="app" >
     <nav>
       <router-link v-if="isLoggined" :to="{ name: 'indexView' }">메인 페이지</router-link> |
-      <span v-if="isLoggined" @click="logout" id="logout">로그아웃 | </span>
-      <span v-if="isLoggined" >마이페이지</span>
+      <router-link v-if="isLoggined" :to="{ name: 'profile', params: {username: username }}" >마이페이지</router-link> |
+      <span v-if="isLoggined" @click="logout" id="logout">로그아웃</span>
       <router-link v-if="!isLoggined" :to="{ name: 'login' }">LogIn</router-link>
     </nav>
     <router-view/>
@@ -15,7 +15,10 @@ export default {
   computed: {
     isLoggined(){
       return this.$store.state.token
-    }
+    },
+    username(){
+      return this.$store.state.username
+    },
   },
   methods: {
     logout(){

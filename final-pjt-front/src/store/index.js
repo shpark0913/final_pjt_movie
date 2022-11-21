@@ -18,27 +18,27 @@ export default new Vuex.Store({
     // 영화 관련 Data
     movieList: [],        // index에 띄울 movieList
     movieDetail: null,    // movieDetail 페이지에 띄울 영화 담기
-    genreList:{
-      12: '모험',
-      14: '판타지',
-      16: '애니메이션',
-      18: '드라마',
-      27: '공포',
-      28: '액션',
-      35: '코미디',
-      36: '역사',
-      37: '서부',
-      53: '스릴러',
-      80: '범죄',
-      99: '다큐멘터리',
-      878: 'SF',
-      9648: '미스터리',
-      10402: '음악',
-      10749: '로맨스',
-      10751: '가족',
-      10752: '전쟁',
-      10770: 'TV 영화'
-    },
+    // genreList:{
+    //   12: '모험',
+    //   14: '판타지',
+    //   16: '애니메이션',
+    //   18: '드라마',
+    //   27: '공포',
+    //   28: '액션',
+    //   35: '코미디',
+    //   36: '역사',
+    //   37: '서부',
+    //   53: '스릴러',
+    //   80: '범죄',
+    //   99: '다큐멘터리',
+    //   878: 'SF',
+    //   9648: '미스터리',
+    //   10402: '음악',
+    //   10749: '로맨스',
+    //   10751: '가족',
+    //   10752: '전쟁',
+    //   10770: 'TV 영화'
+    // },
 
     // 리뷰 관련 Data
     reviewList: null,     // 특정 영화에 대한 reviewList
@@ -53,7 +53,7 @@ export default new Vuex.Store({
 
   mutations: {
     // 1. 로그인 관련
-    // 1-1. login/signup - 세션 스토리지에 토큰을 저장, 세션이 종료되지 않는 이상 로그인 상태 유지
+    // 1-1. 로그인 회원가입 시 token, username, userpk 저장 + sessionStorage에 저장하기
     SAVE_USER_INFO(state, userinfo){
       state.token = userinfo.token;
       state.username = userinfo.username;
@@ -63,7 +63,7 @@ export default new Vuex.Store({
       sessionStorage.setItem('userpk', userinfo.userpk);
       router.push({ name: 'indexView' });
     },
-    // 1-4. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
+    // 1-2. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
     LOGOUT(state){
       state.token = null;
       state.username = null;
@@ -73,11 +73,11 @@ export default new Vuex.Store({
       sessionStorage.removeItem('userpk');
       router.push({ name: 'login' });
     },
-    // 1-5. 로그인/회원가입 시 에러메시지 저장
+    // 1-3. 로그인/회원가입 시 에러메시지 저장
     ERROR_MSG(state, msg){
       state.errors.push(msg);
     },
-    // 1-6. 에러메시지 초기화 (안그러면 계속 에러 메시지가 쌓임!)
+    // 1-4. 에러메시지 초기화 (안그러면 계속 에러 메시지가 쌓임!)
     RESET_ERROR_MSG(state){
       state.errors = [];
     },
@@ -97,6 +97,10 @@ export default new Vuex.Store({
     GET_REVIEWS(state, reviewList){
       state.reviewList = reviewList;
     },
+    // 3-2. 리뷰 리셋하기
+    RESET_REVIEWS(state){
+      state.reviewList = null;
+    }
   },
 
   actions: {
@@ -234,6 +238,7 @@ export default new Vuex.Store({
         .catch((error)=>{
           console.log(error);
           context.commit('GET_REVIEWS', '리뷰가 존재하지 않습니다😥');
+          
         })
     },
     // 3-3. Delete - 리뷰 삭제
@@ -250,9 +255,23 @@ export default new Vuex.Store({
         })
     },
     // 3-4. Update - 리뷰 수정
-    // updateReview(context, review){
-
-    // },
+    updateReview(context, review){
+      axios({
+        method: 'PUT',
+        url: `${API_URL}/movies/review/${review.reviewid}/`,
+        data: {
+          content: review.content,
+          vote_average: review.vote_average,
+        }
+      })
+        .then((response)=>{
+          console.log(response);
+          context.dispatch('getReviews', review.movieid);
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+    },
   },
   modules: {
   }

@@ -5,8 +5,9 @@
     <p v-if="review?.vote_average === true ">평점 | 재밌어요😀</p>
     <p v-else>평점 | 별로에요🤮</p>
     <p>평가 | {{ review?.content }}</p>
-    <span class="editBtn" @click="editReview">수정하기  </span>
-    <span class="editBtn" @click="deleteReview">  삭제하기</span>
+    <span v-if="review.user == userpk" class="editBtn" @click="editReview">수정하기  </span>
+    <span v-if="review.user == userpk" class="editBtn" @click="deleteReview">  삭제하기</span>
+    <hr>
   </div>
 </template>
 
@@ -15,6 +16,11 @@ export default {
   name: 'ReviewSectionItem',
   props: {
     review: Object,
+  },
+  data(){
+    return{
+      userpk: this.$store.state.userpk
+    }
   },
   methods: {
     editReview(){
@@ -34,5 +40,6 @@ export default {
 <style>
 .editBtn{
   cursor: pointer;
+  border: 1px solid black;
 }
 </style>
