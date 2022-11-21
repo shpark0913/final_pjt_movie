@@ -6,6 +6,7 @@ import IndexView from '@/views/IndexView'
 import SignUpView from '@/views/SignUpView'
 import LogInView from '@/views/LogInView'
 import MovieDetailView from '@/views/MovieDetailView'
+import NotFoundView from '@/views/NotFoundView'
 
 
 Vue.use(VueRouter)
@@ -36,6 +37,15 @@ const routes = [
   //   name: 'about',
   //   component: () => import('../views/AboutView.vue')
   // }
+  {
+    path: '/notfound',
+    name: 'notFound',
+    component: NotFoundView,
+  },
+  {
+    path: '*',
+    redirect: '/notfound'
+  },
 ]
 
 const router = new VueRouter({

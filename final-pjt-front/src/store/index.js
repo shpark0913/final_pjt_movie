@@ -54,19 +54,14 @@ export default new Vuex.Store({
   mutations: {
     // 1. 로그인 관련
     // 1-1. login/signup - 세션 스토리지에 토큰을 저장, 세션이 종료되지 않는 이상 로그인 상태 유지
-    SAVE_TOKEN(state, token){
-      state.token = token;
-      sessionStorage.setItem('token', token);
-    },
-    // 1-2. username 저장 - username을 저장하자.
-    SAVE_USERNAME(state, username){
-      state.username = username;
-      sessionStorage.setItem('username', username);
-    },
-    // 1-3. userpk 저장
-    SAVE_USER_PK(state, userpk){
-      state.userpk = userpk;
-      sessionStorage.setItem('userpk', userpk);
+    SAVE_USER_INFO(state, userinfo){
+      state.token = userinfo.token;
+      state.username = userinfo.username;
+      state.userpk = userinfo.userpk;
+      sessionStorage.setItem('token', userinfo.token);
+      sessionStorage.setItem('username', userinfo.username);
+      sessionStorage.setItem('userpk', userinfo.userpk);
+      router.push({ name: 'indexView' });
     },
     // 1-4. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
     LOGOUT(state){
@@ -118,11 +113,11 @@ export default new Vuex.Store({
         }
       })
         .then((response)=>{
-          // 회원가입에 성공하면 token을 저장하고 index 페이지로 이동
-          context.commit('SAVE_TOKEN', response.data.key);
-          context.commit('SAVE_USERNAME', userinfo.username);
-          context.dispatch('getUserPK', userinfo.username);
-          router.push({ name: 'indexView' })
+          const userInfo = {
+            token: response.data.key,
+            username: userinfo.username
+          }
+          context.dispatch('saveUserInfo', userInfo)
         })
         .catch((error)=>{
           // 에러가 나면 에러 메시지 저장
@@ -144,9 +139,11 @@ export default new Vuex.Store({
         }
       })
         .then((response)=>{
-          context.commit('SAVE_TOKEN', response.data.key);
-          context.commit('SAVE_USERNAME', userinfo.username);
-          router.push({ name: 'indexView' });
+          const userInfo = {
+            token: response.data.key,
+            username: userinfo.username,
+          }
+          context.dispatch('saveUserInfo', userInfo)
         })
         .catch((error)=>{
           for(const errors of Object.values(error.response.data)){
@@ -156,14 +153,18 @@ export default new Vuex.Store({
           }
         })
     },
-    getUserPK(context, username){
+    saveUserInfo(context, userinfo){
       axios({
         method: 'GET',
-        url: `${API_URL}/movies/user/${username}`
+        url: `${API_URL}/movies/user/${userinfo.username}`
       })
         .then((response)=>{
-          console.log(response);
-          // SAVE_USER_PK
+          const userInfo = {
+            token: userinfo.token,
+            username: userinfo.username,
+            userpk: response.data.user_pk,
+          }
+          context.commit('SAVE_USER_INFO', userInfo)
         })
         .catch((error)=>{
           console.log(error);
@@ -182,6 +183,7 @@ export default new Vuex.Store({
         })
         .catch((error)=>{
           console.log(error);
+          router.push({ name: 'notFound' });
         })
     },
     // 2-2. 영화 디테일 데이터 불러오기
@@ -195,6 +197,7 @@ export default new Vuex.Store({
         })
         .catch((error)=>{
           console.log(error);
+          router.replace({ name: 'notFound' });
         })
     },
 
