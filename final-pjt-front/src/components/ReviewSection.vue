@@ -46,7 +46,8 @@
       </div>
     </div>
     <br><br><br><br><br>
-    <h3>다른 사람들의 리뷰</h3>
+    
+    <h3>모든 리뷰</h3>
     <div v-if="typeof reviewList === 'string'">
       {{ reviewList }}
     </div>

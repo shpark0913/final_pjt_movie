@@ -23,7 +23,7 @@ export default {
     movieDetail(){
       this.$router.push({ name: 'movieDetail', params: { movieid: this.movie.movieid } })
     }
-  }
+  },
 }
 </script>
 
