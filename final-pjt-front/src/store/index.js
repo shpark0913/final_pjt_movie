@@ -11,13 +11,34 @@ export default new Vuex.Store({
   state: {
     // 로그인 관련 Data
     username: sessionStorage.getItem('username'),
-    // userpk: sessionStorage.getItem('userpk'),
+    userpk: sessionStorage.getItem('userpk'),
     token: sessionStorage.getItem('token'),    // 로그인 토큰
     errors: [],                                // 로그인, 회원가입 실패 시 띄울 오류 문구
 
     // 영화 관련 Data
     movieList: [],        // index에 띄울 movieList
     movieDetail: null,    // movieDetail 페이지에 띄울 영화 담기
+    genreList:{
+      12: '모험',
+      14: '판타지',
+      16: '애니메이션',
+      18: '드라마',
+      27: '공포',
+      28: '액션',
+      35: '코미디',
+      36: '역사',
+      37: '서부',
+      53: '스릴러',
+      80: '범죄',
+      99: '다큐멘터리',
+      878: 'SF',
+      9648: '미스터리',
+      10402: '음악',
+      10749: '로맨스',
+      10751: '가족',
+      10752: '전쟁',
+      10770: 'TV 영화'
+    },
 
     // 리뷰 관련 Data
     reviewList: null,     // 특정 영화에 대한 reviewList
@@ -43,28 +64,27 @@ export default new Vuex.Store({
       sessionStorage.setItem('username', username);
     },
     // 1-3. userpk 저장
-    // SAVE_USER_PK(state, userpk){
-    //   state.userpk = userpk;
-    //   sessionStorage.setItem('userpk', userpk);
-    // },
-
-    // 1-4. 로그인/회원가입 시 에러메시지 저장
-    ERROR_MSG(state, msg){
-      state.errors.push(msg);
+    SAVE_USER_PK(state, userpk){
+      state.userpk = userpk;
+      sessionStorage.setItem('userpk', userpk);
     },
-    // 1-5. 에러메시지 초기화 (안그러면 계속 에러 메시지가 쌓임!)
-    RESET_ERROR_MSG(state){
-      state.errors = [];
-    },
-    // 1-6. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
+    // 1-4. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
     LOGOUT(state){
       state.token = null;
       state.username = null;
-      // state.userpk = null;
+      state.userpk = null;
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('username');
-      // sessionStorage.removeItem('userpk');
+      sessionStorage.removeItem('userpk');
       router.push({ name: 'login' });
+    },
+    // 1-5. 로그인/회원가입 시 에러메시지 저장
+    ERROR_MSG(state, msg){
+      state.errors.push(msg);
+    },
+    // 1-6. 에러메시지 초기화 (안그러면 계속 에러 메시지가 쌓임!)
+    RESET_ERROR_MSG(state){
+      state.errors = [];
     },
 
     // 2. 영화 관련
@@ -101,6 +121,7 @@ export default new Vuex.Store({
           // 회원가입에 성공하면 token을 저장하고 index 페이지로 이동
           context.commit('SAVE_TOKEN', response.data.key);
           context.commit('SAVE_USERNAME', userinfo.username);
+          context.dispatch('getUserPK', userinfo.username);
           router.push({ name: 'indexView' })
         })
         .catch((error)=>{
@@ -133,6 +154,19 @@ export default new Vuex.Store({
               context.commit('ERROR_MSG', msg);
             }
           }
+        })
+    },
+    getUserPK(context, username){
+      axios({
+        method: 'GET',
+        url: `${API_URL}/movies/user/${username}`
+      })
+        .then((response)=>{
+          console.log(response);
+          // SAVE_USER_PK
+        })
+        .catch((error)=>{
+          console.log(error);
         })
     },
 
@@ -211,7 +245,11 @@ export default new Vuex.Store({
         .catch((error)=>{
           console.log(error);
         })
-    }
+    },
+    // 3-4. Update - 리뷰 수정
+    // updateReview(context, review){
+
+    // },
   },
   modules: {
   }
