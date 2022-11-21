@@ -76,13 +76,11 @@ def profile(request, username):
     for review in reviews:
         m = Movie.objects.get(movieid=review.movie_id)
         movieObj = {'movieid': m.movieid, 'moviename': m.title, 'poster_path': m.poster_path}
-        reviewObj = {'movieid': review.movie_id, 'content': review.content}
+        reviewObj = {'movie': movieObj, 'content': review.content}
         if review.vote_average:
-            # movie_like.append(review.movie_id)
             movie_like.append(movieObj)
             review_like.append(reviewObj)
         else:
-            # movie_unlike.append(review.movie_id)
             movie_unlike.append(movieObj)
             review_unlike.append(reviewObj)
     return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'like_reviews': review_like, 'unlike_reviews': review_unlike})
