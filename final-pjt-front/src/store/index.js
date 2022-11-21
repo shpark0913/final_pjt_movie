@@ -10,8 +10,10 @@ const API_URL = 'http://127.0.0.1:8000'
 export default new Vuex.Store({
   state: {
     // 로그인 관련 Data
+    username: sessionStorage.getItem('username'),
+    // userpk: sessionStorage.getItem('userpk'),
     token: sessionStorage.getItem('token'),    // 로그인 토큰
-    errors: [],                              // 아직 구현x
+    errors: [],                                // 로그인, 회원가입 실패 시 띄울 오류 문구
 
     // 영화 관련 Data
     movieList: [],        // index에 띄울 movieList
@@ -35,18 +37,33 @@ export default new Vuex.Store({
       state.token = token;
       sessionStorage.setItem('token', token);
     },
-    // 1-2. 로그인/회원가입 시 에러메시지 저장
+    // 1-2. username 저장 - username을 저장하자.
+    SAVE_USERNAME(state, username){
+      state.username = username;
+      sessionStorage.setItem('username', username);
+    },
+    // 1-3. userpk 저장
+    // SAVE_USER_PK(state, userpk){
+    //   state.userpk = userpk;
+    //   sessionStorage.setItem('userpk', userpk);
+    // },
+
+    // 1-4. 로그인/회원가입 시 에러메시지 저장
     ERROR_MSG(state, msg){
       state.errors.push(msg);
     },
-    // 1-3. 에러메시지 초기화 (안그러면 계속 에러 메시지가 쌓임!ㅜ)
+    // 1-5. 에러메시지 초기화 (안그러면 계속 에러 메시지가 쌓임!)
     RESET_ERROR_MSG(state){
       state.errors = [];
     },
-    // 1-4. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
+    // 1-6. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
     LOGOUT(state){
       state.token = null;
+      state.username = null;
+      // state.userpk = null;
       sessionStorage.removeItem('token');
+      sessionStorage.removeItem('username');
+      // sessionStorage.removeItem('userpk');
       router.push({ name: 'login' });
     },
 
@@ -83,6 +100,7 @@ export default new Vuex.Store({
         .then((response)=>{
           // 회원가입에 성공하면 token을 저장하고 index 페이지로 이동
           context.commit('SAVE_TOKEN', response.data.key);
+          context.commit('SAVE_USERNAME', userinfo.username);
           router.push({ name: 'indexView' })
         })
         .catch((error)=>{
@@ -106,6 +124,7 @@ export default new Vuex.Store({
       })
         .then((response)=>{
           context.commit('SAVE_TOKEN', response.data.key);
+          context.commit('SAVE_USERNAME', userinfo.username);
           router.push({ name: 'indexView' });
         })
         .catch((error)=>{
@@ -177,7 +196,7 @@ export default new Vuex.Store({
         })
         .catch((error)=>{
           console.log(error);
-          context.commit('GET_REVIEWS', `리뷰가 존재하지 않아요\n첫 번째 리뷰를 작성해볼까요?!`);
+          context.commit('GET_REVIEWS', '리뷰가 존재하지 않습니다😥');
         })
     },
     // 3-3. Delete - 리뷰 삭제

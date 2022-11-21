@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>메인페이지!</h1>
+    <h1>안녕하세요, {{ username }}님</h1>
     <MovieSection />
   </div>
 </template>
@@ -13,6 +13,11 @@ export default {
   components: {
     MovieSection,
   },
+  computed: {
+    username(){
+      return this.$store.state.username;
+    }
+  }
 }
 </script>
 
