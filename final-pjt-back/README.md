@@ -1,4 +1,3 @@
----
 # 👍 0일차 (221115)
 
 ### 1. **앱 만들기**
@@ -9,21 +8,28 @@
 ### 2. 기본 설정
 
 - 기본 User 모델 ****변경
+  
   - AUTH_USER_MODEL을 **accounts.User** 모델로 변경
+
 - AJAX 요청 준비
+  
   - axios 설치
+
 - CORS (Cross-Origin Resource Sharing)
+  
   - HTTP Response Header 중에서 **Access-Control-Allow_Origin** 사용
+    
     - 이를 위해 djnago-cors-headers 설치
+    
     - settings.py에 추가 설정
+      
       - INSTALLED_APPS 에 corsheaders 추가
-
+      
       - MIDDLEWARE에 corsheaders.middleware.CorsMiddleware, django.middleware.common.CommonMiddleware 추가
-
+      
       - CORS_ALLOWED_ORIGINS에 교차 출처 자원 공유를 위해
-
+        
         local host Domain을 등록
-
 
 ### 3. 회원가입
 
@@ -169,10 +175,98 @@
 ### 목표
 
 1. Username을 이용해 User의 pk를 조회할 수 있는 함수 만들기
-2. User의 Profile 구현
-3. User의 Follow 구현
-4. 2, 3을 구현하기 위한 ERD 수정
+2. review component에 작성한 user의 pk가 조회되는데, 이를 username 으로 바꾸기
+3. movie detail 페이지에서 pk로 조회되는 장르를 genre name으로 조회하기
+4. movie의 pk를 이용해서 TMDB에서 추천 영화 불러오기
+5. 특정 user가 좋아한 영화와 싫어한 영화 조회하기
+6. 특정 user가 작성한 댓글들 조회하기
 
 ### Username을 이용해 User의 pk 조회하기
 
 - `user/str:username/` 라는 새로운 경로를 지정해 view 함수를 생성
+
+### Review componet에 user의 pk가 아닌 username 나오게 하기
+
+- serializer를 이용해 해결
+  - `username = serializers.CharField(source='user.username')` 을 추가해 username을 추가로 조회할 수 있도록 구현
+
+### movie detail 페이지에서 genre를 pk가 아닌 name으로 조회하기
+
+```
+class GenreSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Genre
+        fields = '__all__'
+        read_only_fields = ('genre',)
+
+class MovieDetailSerializer(serializers.ModelSerializer):
+    review_set = ReviewListSerializer(many=True, read_only=True)
+    genres = GenreSerializer(many=True, read_only=True)
+    class Meta:
+        model = Movie
+        fields = '__all__'
+```
+
+- GenreSerializer를 만들어서 해결
+
+### 특정 movie의 pk를 이용해 TMDB에서 추천 영화 불러오기
+
+```
+@api_view(['GET'])
+def recommend(request, movieid):
+    request_url = f"<https://api.themoviedb.org/3/movie/{movieid}/recommendations?api_key={API_KEY}&language=ko-KR&page=1>"
+    movies = requests.get(request_url).json()
+
+    # 받아온 movie들 DB에 추가 저장
+    for movie in movies['results']:
+        movie_instance = Movie()
+        movie_instance.title  = movie['title']
+        movie_instance.movieid  = movie['id']
+        movie_instance.backdrop_path = movie['backdrop_path']
+        movie_instance.release_date = movie.get('release_date')
+        movie_instance.vote_average = movie['vote_average']
+        movie_instance.overview = movie['overview']
+        movie_instance.poster_path = movie['poster_path']
+        if movie_instance.overview and movie_instance.release_date and movie_instance.poster_path and movie_instance.backdrop_path:
+            movie_instance.save()
+            for genre in movie.get('genre_ids'):
+                movie_instance.genres.add(genre)
+
+    m = movies['results']
+    return Response({'recommendations': m})
+```
+
+- f-string을 사용해 해결
+- TMDB로부터 받아온 새로운 영화들을 다시 활용하기 위해 DB에 저장하는 기능을 추가함.
+
+### user가 좋아하거나 싫어한 영화 조회하기, 작성한 댓글 조회하기 기능 통합
+
+```jsx
+@api_view(['GET'])
+def profile(request, username):
+    u = get_object_or_404(get_user_model(), username=username)
+    reviews = get_list_or_404(Review, user_id=u.pk)
+    movie_like = []
+    movie_unlike = []
+    review_like = []
+    review_unlike = []
+    for review in reviews:
+        if review.vote_average:
+            movie_like.append(review.movie_id)
+            review_like.append({'movieid': review.movie_id, 'content': review.content})
+        else:
+            movie_unlike.append(review.movie_id)
+            review_unlike.append({'movieid': review.movie_id, 'content': review.content})
+    return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'like_reviews': review_like, 'unlike_reviews': review_unlike})
+```
+
+- 코드를 작성해 보니
+  
+  - user가 좋아한 영화 목록 조회, 싫어한 영화 목록 조회
+  
+  - 작성한 댓글 조회
+    
+    각각의 코드가 유사하여 하나로 통합
+
+- 편의를 위해 Response에 userid 와 username을 명시적으로 표시
