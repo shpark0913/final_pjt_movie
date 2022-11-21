@@ -8,7 +8,7 @@ class MovieListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReviewListSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Review
         fields = '__all__'

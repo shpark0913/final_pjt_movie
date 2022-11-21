@@ -36,6 +36,9 @@ urlpatterns = [
     # path('war10/', views.war10, name='war10'),
     # path('tvmovie10/', views.tvmovie10, name='tvmovie10'),
 
+    # username 받으면 user의 pk 반환하기
+    path('user/<str:username>/', views.wantuserpk, name='wantuserpk'),
+
     # 초반 fixtures data 만들기 위한 경로
     path('get_movie_datas/', views.get_movie_datas, name='get_movie_datas'),
     path('get_genre/', views.get_genre, name='get_genre'),
