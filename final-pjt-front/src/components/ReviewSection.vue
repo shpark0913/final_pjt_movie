@@ -6,11 +6,9 @@
         <label for="my-review">리뷰 작성하기</label>
         <textarea required v-model="content" id="my-review" cols="30" rows="10" placeholder="리뷰 작성!"></textarea>
         <br>
-        <input v-model="vote_average" type="radio" name="rate" value="1" id="1"><label for="1">⭐</label>
-        <input v-model="vote_average" type="radio" name="rate" value="2" id="2"><label for="2">⭐⭐</label>
-        <input v-model="vote_average" type="radio" name="rate" value="3" id="3"><label for="3">⭐⭐⭐</label>
-        <input v-model="vote_average" type="radio" name="rate" value="4" id="4"><label for="4">⭐⭐⭐⭐</label>
-        <input v-model="vote_average" type="radio" name="rate" value="5" id="5" checked><label for="5">⭐⭐⭐⭐⭐</label><br>
+        <input v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
+        <input v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
+        <br>
         <br>
         <input type="submit" value="작성하기">
       </form>

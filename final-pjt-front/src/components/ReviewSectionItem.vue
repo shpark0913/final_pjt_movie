@@ -2,7 +2,8 @@
   <div>
     <!-- <p>{{ review }}</p> -->
     <h3>User | {{ review?.user }}</h3>
-    <p>평점 | {{ review?.vote_average }}</p>
+    <p v-if="review?.vote_average === true ">평점 | 재밌어요😀</p>
+    <p v-else>평점 | 별로에요🤮</p>
     <p>평가 | {{ review?.content }}</p>
     <span class="editBtn" @click="editReview">수정하기  </span>
     <span class="editBtn" @click="deleteReview">  삭제하기</span>
