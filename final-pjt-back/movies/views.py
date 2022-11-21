@@ -65,7 +65,7 @@ def wantuserpk(request, username):
 
 # username 받고 그 user가 좋아요, 싫어요 한 영화와 작성한 댓글 출력
 @api_view(['GET'])
-def like(request, username):
+def profile(request, username):
     u = get_object_or_404(get_user_model(), username=username)
     reviews = get_list_or_404(Review, user_id=u.pk)
     movie_like = []
@@ -79,7 +79,7 @@ def like(request, username):
         else:
             movie_unlike.append(review.movie_id)
             review_unlike.append({'movieid': review.movie_id, 'content': review.content})
-    return Response({'likes': movie_like, 'unlikes': movie_unlike, 'like_reviews': review_like, 'unlike_reviews': review_unlike})
+    return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'like_reviews': review_like, 'unlike_reviews': review_unlike})
 
 # tmdb에서 추천 영화 받기
 @api_view(['GET'])

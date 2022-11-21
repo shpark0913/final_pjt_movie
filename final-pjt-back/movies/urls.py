@@ -40,7 +40,7 @@ urlpatterns = [
     path('user/<str:username>/', views.wantuserpk, name='wantuserpk'),
     
     # username 받고 그 user가 좋아요, 싫어요 한 영화와 작성한 댓글 출력
-    path('user/<str:username>/like/', views.like, name='like'),
+    path('user/<str:username>/profile/', views.profile, name='profile'),
     
     # tmdb에서 추천 영화 받기
     path('<int:movieid>/recommendations/', views.recommend, name='recommend'),
