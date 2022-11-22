@@ -270,3 +270,123 @@ def profile(request, username):
     각각의 코드가 유사하여 하나로 통합
 
 - 편의를 위해 Response에 userid 와 username을 명시적으로 표시
+
+---
+
+# 👍 7일차 (221122)
+
+### 목표
+
+1. mypage에서 user가 작성한 review 조회할 때 코드 수정
+   
+   1. review serializer 활용
+   
+   2. movie detail serializer 활용
+   - 수정 이유는?
+     - 불필요한 코드 줄이기
+     - vue에서 component 재사용성을 위해
+
+2. user가 좋아하는 영화의 장르 비율 계산하기
+   
+   1. 절대도수를 Response하는 방식으로 구현 예정
+
+### mypage 에서 data 를 손쉽게 조회하기 위해 profile view 함수 수정
+
+### & user가 좋아하는 영화의 장르 비율 계산하는 기능 추가
+
+ver.1
+
+```python
+@api_view(['GET'])
+def profile(request, username):
+    u = get_object_or_404(get_user_model(), username=username)
+    reviews = get_list_or_404(Review, user_id=u.pk)
+    movie_like = []
+    movie_unlike = []
+    review_all = []
+    for review in reviews:
+        m = Movie.objects.get(movieid=review.movie_id)
+        movieObj = {'movieid': m.movieid, 'moviename': m.title, 'poster_path': m.poster_path}
+        reviewObj = {'movie': movieObj, 'content': review.content}
+        review_all.append(reviewObj)
+        if review.vote_average:
+            movie_like.append(movieObj)
+        else:
+            movie_unlike.append(movieObj)
+
+    return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': review_all})
+```
+
+- 입력받은 username을 이용해 u라는 유저 찾기
+  
+  → 좋아한 영화: movie_like, 싫어한 영화: movie_unlike, 작성한 리뷰들: review_all 에 각각 저장
+
+- Object의 property 이름이 달라서 재사용이 힘들었음
+
+ver.2
+
+```python
+@api_view(['GET'])
+def profile(request, username):
+    user = get_object_or_404(get_user_model(), username=username)
+    reviews = get_list_or_404(Review, user_id=user.pk)
+    movie_like_genre = []
+    movie_like = []
+    movie_unlike = []
+    for review in reviews:
+        movie = Movie.objects.get(movieid=review.movie_id)
+        movieSerializer = MovieDetailSerializer(movie)
+        movieObj = {'movieid': movie.movieid, 'moviename': movie.title, 'poster_path': movie.poster_path}
+        if review.vote_average:
+            movie_like_genre.append(movieObj)
+            movie_like.append(movieSerializer.data)
+        else:
+            movie_unlike.append(movieSerializer.data)
+    reviewSerializer = ReviewListSerializer(reviews, many=True)
+    like_genres = {}
+
+    if movie_like_genre:
+        for elt in movie_like_genre:
+            m = Movie.objects.get(movieid=elt['movieid'])
+            m = list(m.genres.all().values())
+            for elt in m:
+                if elt['name'] not in like_genres:
+                    like_genres[elt['name']] = 1
+                else:
+                    like_genres[elt['name']] += 1
+
+    return Response({'userid': user.pk, 'username': user.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': reviewSerializer.data, 'like_genres': like_genres})
+```
+
+- MovieDetailSerializer와 ReviewListSerializer를 이용해 Object의 property 이름을 일치시킴
+  
+  → vue에서 component의 재사용성 확보
+
+- 좋아한 영화의 장르들을 like_genres에 저장
+
+- BUT! movie_like_genre와 movie_like를 통합할 수 있을 것 같아 더 간단한 코드를 구현해보기로 결심
+
+ver.3
+
+```python
+@api_view(['GET'])
+def profile(request, username):
+    u = get_object_or_404(get_user_model(), username=username)
+    reviews = get_list_or_404(Review, user_id=u.pk)
+    movie_like = []
+    movie_unlike = []
+    review_all = []
+    for review in reviews:
+        m = Movie.objects.get(movieid=review.movie_id)
+        movieObj = {'movieid': m.movieid, 'moviename': m.title, 'poster_path': m.poster_path}
+        reviewObj = {'movie': movieObj, 'content': review.content}
+        review_all.append(reviewObj)
+        if review.vote_average:
+            movie_like.append(movieObj)
+        else:
+            movie_unlike.append(movieObj)
+
+    return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': review_all})
+```
+
+- movie_like_genre를 따로 만들지 않고 movie_like에서 data를 조회해 like_genres 완성
