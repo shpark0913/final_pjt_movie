@@ -77,7 +77,8 @@ def want_user_pk(request, username):
 @api_view(['GET'])
 def profile(request, username):
     user = get_object_or_404(get_user_model(), username=username)
-    reviews = get_list_or_404(Review, user_id=user.pk)
+    # reviews = get_list_or_404(Review, user_id=user.pk)
+    reviews = Review.objects.filter(user_id=user.pk)
     reviewSerializer = ReviewListSerializer(reviews, many=True)
     movie_like = []
     movie_unlike = []
