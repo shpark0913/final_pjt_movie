@@ -72,32 +72,6 @@ def want_user_pk(request, username):
     user = get_object_or_404(get_user_model(), username=username)
     return Response({'user_pk': user.pk})
 
-
-# # username 받고 그 user가 좋아요, 싫어요 한 영화와 작성한 댓글 출력
-# @api_view(['GET'])
-# def profile(request, username):
-#     user = get_object_or_404(get_user_model(), username=username)
-#     reviews = get_list_or_404(Review, user_id=user.pk)
-#     reviewSerializer = ReviewListSerializer(reviews, many=True)
-#     movie_like = []
-#     movie_unlike = []
-#     like_genres = {}
-#     for review in reviews:
-#         movie = Movie.objects.get(movieid=review.movie_id)
-#         movieSerializer = MovieDetailSerializer(movie)
-#         if review.vote_average:
-#             movie_like.append(movieSerializer.data)
-#         else:
-#             movie_unlike.append(movieSerializer.data)
-#     if movie_like:
-#         for elt in movie_like:
-#             for elt2 in elt['genres']:
-#                 if elt2['name'] not in like_genres:
-#                     like_genres[elt2['name']] = 1
-#                 else:
-#                     like_genres[elt2['name']] += 1
-
-#     return Response({'userid': user.pk, 'username': user.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': reviewSerializer.data, 'like_genres': like_genres})
 # username 받고 그 user가 좋아요, 싫어요 한 영화와 작성한 댓글 출력
 @api_view(['GET'])
 def profile(request, username):
