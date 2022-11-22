@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from rest_framework import status
 import requests, random
 from .models import Movie, Genre, Review, Genrename
-from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer
+from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewListSerializer, MovieGenreSerializer
 from django.contrib.auth import get_user_model
 import json
 
@@ -71,19 +71,25 @@ def profile(request, username):
     reviews = get_list_or_404(Review, user_id=u.pk)
     movie_like = []
     movie_unlike = []
-    review_like = []
-    review_unlike = []
+    review_all = []
     for review in reviews:
         m = Movie.objects.get(movieid=review.movie_id)
         movieObj = {'movieid': m.movieid, 'moviename': m.title, 'poster_path': m.poster_path}
         reviewObj = {'movie': movieObj, 'content': review.content}
+        review_all.append(reviewObj)
         if review.vote_average:
             movie_like.append(movieObj)
-            review_like.append(reviewObj)
         else:
             movie_unlike.append(movieObj)
-            review_unlike.append(reviewObj)
-    return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'like_reviews': review_like, 'unlike_reviews': review_unlike})
+
+    like_genres = {}
+
+    # if movie_like:
+    #     for elt in movie_like:
+    #         m = Movie.objects.get(movieid=elt['movieid'])
+    #         m = m.genresd
+    #         break
+    return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': review_all})
 
 # tmdb에서 추천 영화 받기
 @api_view(['GET'])
