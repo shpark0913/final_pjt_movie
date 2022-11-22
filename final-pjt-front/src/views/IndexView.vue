@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>안녕하세요, {{ username }}님</h1>
-    <MovieSection class="movieSection" />
+    <MovieSection/>
   </div>
 </template>
 
@@ -22,7 +22,5 @@ export default {
 </script>
 
 <style>
-/* .movieSection{
 
-} */
 </style>

@@ -17,6 +17,7 @@
         </form>
         <span class="editBtn" @click="toggleUpdate">취소하기</span>
       </div>
+
       <!-- 수정하는거 아니면 그냥 내가 썼던 리뷰 보이기 -->
       <div v-else>
         <h3>내 리뷰</h3>
@@ -28,7 +29,7 @@
       </div>
 
     </div>
-
+    <!-- ---------------------------------- -->
     <!-- 만약 내 리뷰가 존재하지 않으면? 작성하기만 가능 -->
     <div v-else>
       <h3 >영화 리뷰 작성하기</h3>
@@ -102,10 +103,10 @@ export default {
     }
   },
   methods: {
-    getReviews(){
-      const movieId = this.$route.params.movieid;
-      this.$store.dispatch('getReviews', movieId);
-    },
+    // getReviews(){
+    //   const movieId = this.$route.params.movieid;
+    //   this.$store.dispatch('getReviews', movieId);
+    // },
     createReview(){
       const review = {
         vote_average: this.vote_average,
