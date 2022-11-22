@@ -371,22 +371,28 @@ def profile(request, username):
 ```python
 @api_view(['GET'])
 def profile(request, username):
-    u = get_object_or_404(get_user_model(), username=username)
-    reviews = get_list_or_404(Review, user_id=u.pk)
+    user = get_object_or_404(get_user_model(), username=username)
+    reviews = get_list_or_404(Review, user_id=user.pk)
+    reviewSerializer = ReviewListSerializer(reviews, many=True)
     movie_like = []
     movie_unlike = []
-    review_all = []
+    like_genres = {}
     for review in reviews:
-        m = Movie.objects.get(movieid=review.movie_id)
-        movieObj = {'movieid': m.movieid, 'moviename': m.title, 'poster_path': m.poster_path}
-        reviewObj = {'movie': movieObj, 'content': review.content}
-        review_all.append(reviewObj)
+        movie = Movie.objects.get(movieid=review.movie_id)
+        movieSerializer = MovieDetailSerializer(movie)
         if review.vote_average:
-            movie_like.append(movieObj)
+            movie_like.append(movieSerializer.data)
         else:
-            movie_unlike.append(movieObj)
+            movie_unlike.append(movieSerializer.data)
+    if movie_like:
+        for elt in movie_like:
+            for elt2 in elt['genres']:
+                if elt2['name'] not in like_genres:
+                    like_genres[elt2['name']] = 1
+                else:
+                    like_genres[elt2['name']] += 1
 
-    return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': review_all})
+    return Response({'userid': user.pk, 'username': user.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': reviewSerializer.data, 'like_g data를 조회해 like_genres 완성
 ```
 
 - movie_like_genre를 따로 만들지 않고 movie_like에서 data를 조회해 like_genres 완성
