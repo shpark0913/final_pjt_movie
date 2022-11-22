@@ -1,11 +1,13 @@
 <template>
   <div id="app" >
     <nav>
-      <router-link v-if="isLoggined" :to="{ name: 'indexView' }">메인 페이지</router-link> |
-      <router-link v-if="isLoggined" :to="{ name: 'profile', params: {username: username }}" >마이페이지</router-link> |
-      <span v-if="isLoggined" @click="logout" id="logout">로그아웃</span>
-      <router-link v-if="!isLoggined" :to="{ name: 'login' }">LogIn</router-link>
+      <router-link v-if="isLoggined" :to="{ name: 'indexView' }">메인 페이지</router-link>
+      <router-link v-if="isLoggined" :to="{ name: 'profile', params: {username: username }}" >마이페이지</router-link>
+      <span v-if="isLoggined" @click="logout" class="pointer">로그아웃</span>
+      <router-link v-if="!isLoggined" :to="{ name: 'login' }">로그인</router-link>
+      <router-link v-if="!isLoggined" :to="{ name: 'signup' }">회원가입</router-link>
     </nav>
+
     <router-view/>
   </div>
 </template>
@@ -33,7 +35,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
 }
 
@@ -49,8 +51,13 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+/*  */
+.pointer {
+  cursor: pointer
+}
 
-#logout{
-  cursor: pointer;
+nav * {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>

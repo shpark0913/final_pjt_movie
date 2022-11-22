@@ -4,6 +4,8 @@
 
 - [백엔드 README](https://github.com/shpark0913/final_pjt_movie/tree/master/final-pjt-back)
 
+### 
+
 ## 0일차(221115)
 
 #### 기획 단계
@@ -50,7 +52,9 @@
 
 7. 댓글..좋아요 팔로잉 등 구현...
 
-### 1일차(221116)
+### 
+
+## 1일차(221116)
 
 #### Git 협의사항
 
@@ -84,7 +88,9 @@
   
   5. `git push`
 
-### 2일차(221117)
+### 
+
+## 2일차(221117)
 
 #### BE
 
@@ -102,7 +108,9 @@
 
 - authentication 관련 정리
 
-### 3일차(221118)
+### 
+
+## 3일차(221118)
 
 #### BE
 
@@ -123,3 +131,73 @@
 - 로그아웃 - sessionstorage에서 토큰 삭제
 
 - 로그인 로직 수정 - token을 세션 스토리지에서만 관리...
+
+### 
+
+## 4일차(221119)
+
+#### BE
+
+- Review model의 field 중 vote_average 속성 변경
+
+#### FE
+
+- 
+
+## 5일차(221120)
+
+#### BE
+
+- FE와 중간 점검 및 방향 협의
+
+#### FE
+
+- BE와 중간 점검 및 방향 협의
+
+### 
+
+## 6일차(221121)
+
+#### BE
+
+- Username을 이용해 User의 pk를 조회할 수 있는 함수 만들기
+
+- review component에 작성한 user의 pk가 조회되는데, 이를 username 으로 바꾸기
+
+- movie detail 페이지에서 pk로 조회되는 장르를 genre name으로 조회하기
+
+- movie의 pk를 이용해서 TMDB에서 추천 영화 불러오기
+
+- 특정 user가 좋아한 영화와 싫어한 영화 조회하기
+
+- 특정 user가 작성한 댓글들 조회하기
+
+#### FE
+
+- vue 로직 정리
+
+- update review 하기
+
+- user name 받아오기
+
+- 404 NOT FOUND → router.replace 이용하면 뒤로가기 가능
+
+- flex로 레이아웃 배치하기
+
+- mypage 구성
+
+### 
+
+## 7일차(221122)
+
+#### BE
+
+- mypage에서 user가 작성한 review 조회하는 코드 수정
+
+- user가 좋아하는 영화의 장르 비율 계산하기
+
+#### FE
+
+- mypage 꾸미기
+
+- 내비게이션 가드 공부하고 다시 적용하기

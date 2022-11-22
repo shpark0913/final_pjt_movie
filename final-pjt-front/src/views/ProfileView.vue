@@ -3,6 +3,9 @@
     <h1>{{ username }}님의 프로필</h1>
     <p>{{ profile }}</p>
 
+    <h3>{{ username }}님이 좋아하는 영화 비율</h3>
+    
+
     <h3>{{ username }}님이 좋아한 영화</h3>
     <div v-if="profile.likes.length">
       <div v-for="likeMovie in profile.likes" :key="likeMovie.movieid">
