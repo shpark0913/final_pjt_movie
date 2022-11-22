@@ -396,3 +396,22 @@ def profile(request, username):
 ```
 
 - movie_like_genre를 따로 만들지 않고 movie_like에서 data를 조회해 like_genres 완성
+
+
+
+### movie의 pk를 사용해서 출연진 정보 불러오기
+
+- profile이 존재하는 배우만 5명 선별하기로 함
+
+```python
+@api_view(['GET'])
+def movie_credit(request, movieid):
+    request_url = f"<https://api.themoviedb.org/3/movie/{movieid}/credits?api_key={API_KEY}&language=ko-KR>"
+    credits_all = requests.get(request_url).json()
+    actor_all = []
+    for actor in credits_all['cast']:
+        if actor['known_for_department'] == 'Acting' and actor['profile_path']:
+            actor_all += [{'name': actor['name'], 'profile_path': actor['profile_path']}]
+            if len(actor_all) == 5:break
+    return Response({'credit': actor_all})
+```
