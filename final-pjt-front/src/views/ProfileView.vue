@@ -3,7 +3,7 @@
     <h1>{{ username }}님의 프로필</h1>
     <p>{{ profile }}</p>
 
-    <h3>{{ username }}님이 좋아하는 영화 비율</h3>
+    <!-- <h3>{{ username }}님이 좋아하는 영화 비율</h3>
     
 
     <h3>{{ username }}님이 좋아한 영화</h3>
@@ -29,21 +29,21 @@
         <MyReview :review="review" />
       </p>
     </div>
-    <div v-else>작성한 리뷰가 없습니다.</div>
+    <div v-else>작성한 리뷰가 없습니다.</div> -->
 
   </div>
 </template>
 
 <script>
-import MovieSectionPoster from '@/components/MovieSectionPoster'
-import MyReview from '@/components/MyReview'
+// import MovieSectionPoster from '@/components/MovieSectionPoster'
+// import MyReview from '@/components/MyReview'
 
 export default {
   name: 'ProfileView',
-  components: {
-    MovieSectionPoster,
-    MyReview,
-  },
+  // components: {
+  //   MovieSectionPoster,
+  //   MyReview,
+  // },
   data(){
     return{
       username: this.$route.params.username,
