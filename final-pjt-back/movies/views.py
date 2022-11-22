@@ -116,6 +116,27 @@ def recommend(request, movieid):
     m = movies['results']
     return Response({'recommendations': m})
 
+@api_view(['GET'])
+def movie_credit(request, movieid):
+    request_url = f"https://api.themoviedb.org/3/movie/{movieid}/credits?api_key={API_KEY}&language=ko-KR"
+    credits_all = requests.get(request_url).json()
+    actor_all = []
+    for actor in credits_all['cast']:
+        if actor['known_for_department'] == 'Acting' and actor['profile_path']:
+            actor_all += [{'name': actor['name'], 'profile_path': actor['profile_path']}]
+            if len(actor_all) == 5:break
+    return Response({'credit': actor_all})
+
+    # request_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={API_KEY}&language=ko-KR"
+    # genres = requests.get(request_url).json()
+    # for genre in genres['genres']:
+    #     g = Genre()
+    #     print(genre)
+    #     g.genreid = genre['id']
+    #     g.name = genre['name']
+    #     if g.genreid and g.name:
+    #         g.save()
+    # return HttpResponse()
 
 # DB 에 저장되어 있는 영화 중 장르에 따라 10개(10개 미만일 수도 있음) 추천 
 @api_view(['GET'])

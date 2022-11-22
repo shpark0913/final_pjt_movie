@@ -9,6 +9,9 @@ urlpatterns = [
     # 단일 영화 조회
     path('<int:movieid>/', views.movie_detail, name='movie_detail'),
     
+    # 영화 credit 조회
+    path('<int:movieid>/credit/', views.movie_credit, name='movie_credit'),
+    
     # GET : 특정 영화 전체 review 조회  /  POST : 특정 영화의 review 작성
     path('<int:movieid>/review/', views.review, name='review'),
     
