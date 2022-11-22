@@ -1,20 +1,28 @@
 <template>
   <div>
-    <p>{{ review.content }}</p>
+    <h3>{{ review.title }}</h3>
+    <img :src="src" alt="" @click="movieDetail">
     <p>{{ review.vote_average }}</p>
-    <!-- <img v-if="imgSrc" :src="imgSrc" alt=""> -->
+    <p>{{ review.content }}</p>
     <hr>
   </div>
 </template>
 
 <script>
-// import axios from 'axios';
-// const API_KEY = '2808f49cb7a157269d3c55874b8d52e5';
-
 export default {
   name: 'MyReview',
   props: {
     review: Object,
+  },
+  data(){
+    return{
+      src: `https://www.themoviedb.org/t/p/original${this.review.poster_path}`
+    }
+  },
+  methods: {
+    movieDetail(){
+      this.$router.push({ name: 'movieDetail', params: { movieid: this.review.movie } })
+    }
   },
 }
 </script>

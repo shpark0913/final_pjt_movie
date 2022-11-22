@@ -16,7 +16,7 @@ export default {
   },
   data(){
     return{
-      poster_path : `https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${this.movie.poster_path}`,
+      poster_path : `https://www.themoviedb.org/t/p/original${this.movie.poster_path}`,
     }
   },
   methods: {
