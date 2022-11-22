@@ -18,6 +18,8 @@ class MovieListSerializer(serializers.ModelSerializer):
 
 class ReviewListSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
+    poster_path = serializers.CharField(source='movie.poster_path', read_only=True)
+    title = serializers.CharField(source='movie.title', read_only=True)
     class Meta:
         model = Review
         fields = '__all__'
