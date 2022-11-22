@@ -85,36 +85,4 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, from, next)=>{
-//   const isLoginned = store.getters.isLogin;
-
-//   // console.log('to:', to);
-//   // console.log('from: ', from);
-
-//   // 로그인된 상태면? login이랑 signup 빼고 다 갈 수 있음
-//   if(isLoginned){
-//     if(to.name !== 'login' && to.name !== 'signup'){
-//       next();
-//     }
-//     else{
-//       next({ name: from.name });
-//     }
-//   }
-//   // 로그인이 안 된 상태면? login이랑 signup만 이용 가능함
-//   else{
-//     if(to.name === 'login' || to.name === 'signup'){
-//       next();
-//     }
-//     else{
-//       next({ name: 'login' });
-//     }
-//   }
-// })
-
-router.beforeEach((to, from, next)=>{
-  console.log('to: ', to);
-  console.log('from: ', from);
-  next();
-})
-
 export default router
