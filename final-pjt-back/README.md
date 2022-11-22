@@ -290,11 +290,11 @@ def profile(request, username):
    
    1. 절대도수를 Response하는 방식으로 구현 예정
 
-### mypage 에서 data 를 손쉽게 조회하기 위해 profile view 함수 수정
+### mypage 에서 data 를 손쉽게 조회하기 위해 profile view 함수 수정 & user가 좋아하는 영화의 장르 비율 계산하는 기능 추가
 
-### & user가 좋아하는 영화의 장르 비율 계산하는 기능 추가
+# 
 
-ver.1
+## ver.1
 
 ```python
 @api_view(['GET'])
@@ -323,7 +323,7 @@ def profile(request, username):
 
 - Object의 property 이름이 달라서 재사용이 힘들었음
 
-ver.2
+## ver.2
 
 ```python
 @api_view(['GET'])
@@ -366,7 +366,7 @@ def profile(request, username):
 
 - BUT! movie_like_genre와 movie_like를 통합할 수 있을 것 같아 더 간단한 코드를 구현해보기로 결심
 
-ver.3
+## ver.3
 
 ```python
 @api_view(['GET'])
