@@ -18,6 +18,27 @@ export default new Vuex.Store({
     // 영화 관련 Data
     movieList: [],        // index에 띄울 movieList
     movieDetail: null,    // movieDetail 페이지에 띄울 영화 담기
+    genreList: {
+      12: '모험',
+      14: '판타지',
+      16: '애니메이션',
+      18: '드라마',
+      27: '공포',
+      28: '액션',
+      35: '코미디',
+      36: '역사',
+      37: '서부',
+      53: '스릴러',
+      80: '범죄',
+      99: '다큐멘터리',
+      878: 'SF',
+      9648: '미스터리',
+      10402: '음악',
+      10749: '로맨스',
+      10751: '가족',
+      10752: '전쟁',
+      10770: 'TV 영화'
+    },
 
     // 리뷰 관련 Data
     reviewList: null,     // 특정 영화에 대한 reviewList

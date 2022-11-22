@@ -103,10 +103,10 @@ export default {
     }
   },
   methods: {
-    // getReviews(){
-    //   const movieId = this.$route.params.movieid;
-    //   this.$store.dispatch('getReviews', movieId);
-    // },
+    getReviews(){
+      const movieId = this.$route.params.movieid;
+      this.$store.dispatch('getReviews', movieId);
+    },
     createReview(){
       const review = {
         vote_average: this.vote_average,

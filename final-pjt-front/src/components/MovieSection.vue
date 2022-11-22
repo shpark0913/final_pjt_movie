@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>영화 섹션1</h2>
+    <h2>영화 섹션</h2>
     <div class="movieIndexPoster">
       <MovieSectionPoster
         v-for="movie in movieList"
