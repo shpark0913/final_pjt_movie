@@ -67,29 +67,34 @@ def wantuserpk(request, username):
 # username 받고 그 user가 좋아요, 싫어요 한 영화와 작성한 댓글 출력
 @api_view(['GET'])
 def profile(request, username):
-    u = get_object_or_404(get_user_model(), username=username)
-    reviews = get_list_or_404(Review, user_id=u.pk)
+    user = get_object_or_404(get_user_model(), username=username)
+    reviews = get_list_or_404(Review, user_id=user.pk)
+    movie_like_genre = []
     movie_like = []
     movie_unlike = []
-    review_all = []
     for review in reviews:
-        m = Movie.objects.get(movieid=review.movie_id)
-        movieObj = {'movieid': m.movieid, 'moviename': m.title, 'poster_path': m.poster_path}
-        reviewObj = {'movie': movieObj, 'content': review.content}
-        review_all.append(reviewObj)
+        movie = Movie.objects.get(movieid=review.movie_id)
+        movieSerializer = MovieDetailSerializer(movie)
+        movieObj = {'movieid': movie.movieid, 'moviename': movie.title, 'poster_path': movie.poster_path}
         if review.vote_average:
-            movie_like.append(movieObj)
+            movie_like_genre.append(movieObj)
+            movie_like.append(movieSerializer.data)
         else:
-            movie_unlike.append(movieObj)
-
+            movie_unlike.append(movieSerializer.data)
+    reviewSerializer = ReviewListSerializer(reviews, many=True)
     like_genres = {}
 
-    # if movie_like:
-    #     for elt in movie_like:
-    #         m = Movie.objects.get(movieid=elt['movieid'])
-    #         m = m.genresd
-    #         break
-    return Response({'userid': u.pk, 'username': u.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': review_all})
+    if movie_like_genre:
+        for elt in movie_like_genre:
+            m = Movie.objects.get(movieid=elt['movieid'])
+            m = list(m.genres.all().values())
+            for elt in m:
+                if elt['name'] not in like_genres:
+                    like_genres[elt['name']] = 1
+                else:
+                    like_genres[elt['name']] += 1
+
+    return Response({'userid': user.pk, 'username': user.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': reviewSerializer.data, 'like_genres': like_genres})
 
 # tmdb에서 추천 영화 받기
 @api_view(['GET'])
