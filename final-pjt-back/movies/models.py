@@ -5,10 +5,6 @@ from django.conf import settings
 class Genre(models.Model):
     genreid = models.IntegerField(primary_key=True)
     name = models.TextField()
-    
-class Genrename(models.Model):
-    genreid = models.IntegerField(primary_key=True)
-    genrename = models.TextField()
 
 class Movie(models.Model):
     movieid = models.IntegerField(primary_key=True)
