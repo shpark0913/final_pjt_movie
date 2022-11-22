@@ -4,7 +4,7 @@
 
 - [백엔드 README](https://github.com/shpark0913/final_pjt_movie/tree/master/final-pjt-back)
 
-## 
+### 
 
 ## 0일차(221115)
 
@@ -144,8 +144,6 @@
 
 - 
 
-### 
-
 ## 5일차(221120)
 
 #### BE
@@ -153,6 +151,8 @@
 - FE와 중간 점검 및 방향 협의
 
 #### FE
+
+- BE와 중간 점검 및 방향 협의
 
 ### 
 
@@ -174,6 +174,18 @@
 
 #### FE
 
+- vue 로직 정리
+
+- update review 하기
+
+- user name 받아오기
+
+- 404 NOT FOUND → router.replace 이용하면 뒤로가기 가능
+
+- flex로 레이아웃 배치하기
+
+- mypage 구성
+
 ### 
 
 ## 7일차(221122)
@@ -185,3 +197,7 @@
 - user가 좋아하는 영화의 장르 비율 계산하기
 
 #### FE
+
+- mypage 꾸미기
+
+- 내비게이션 가드 공부하고 다시 적용하기
