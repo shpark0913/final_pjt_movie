@@ -1,8 +1,9 @@
 <template>
   <div>
     <h3>{{ review.title }}</h3>
-    <img :src="src" alt="" @click="movieDetail">
-    <p>{{ review.vote_average }}</p>
+    <img :src="`https://www.themoviedb.org/t/p/original${review.poster_path}`" alt="" @click="movieDetail">
+    <p v-if="review.vote_average">재밌어요😀</p>
+    <p v-else>별로에요🤮</p>
     <p>{{ review.content }}</p>
     <hr>
   </div>
@@ -13,11 +14,6 @@ export default {
   name: 'MyReview',
   props: {
     review: Object,
-  },
-  data(){
-    return{
-      src: `https://www.themoviedb.org/t/p/original${this.review.poster_path}`
-    }
   },
   methods: {
     movieDetail(){

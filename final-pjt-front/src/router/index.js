@@ -7,6 +7,7 @@ import SignUpView from '@/views/SignUpView'
 import LogInView from '@/views/LogInView'
 import MovieDetailView from '@/views/MovieDetailView'
 import ProfileView from '@/views/ProfileView'
+import ChooseGenreView from '@/views/ChooseGenreView'
 import NotFoundView from '@/views/NotFoundView'
 
 
@@ -57,6 +58,16 @@ const routes = [
     path: '/profile/:username',
     name: 'profile',
     component: ProfileView,
+    beforeEnter(to, from, next){
+      const isLoginned = store.getters.isLogin;
+      if (isLoginned){ next() }
+      else { next({ name: 'login' }) }
+    }
+  },
+  {
+    path: '/choosegenre',
+    name: 'chooseGenre',
+    component: ChooseGenreView,
     beforeEnter(to, from, next){
       const isLoginned = store.getters.isLogin;
       if (isLoginned){ next() }
