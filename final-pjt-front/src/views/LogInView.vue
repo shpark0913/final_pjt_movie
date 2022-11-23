@@ -1,22 +1,43 @@
 <template>
   <div>
-    <h1>로그인</h1>
+  <div class="container">
 
-    <form @submit.prevent="logIn">
-      <label for="username">username: </label>
-      <input type="text" id="username" v-model="username"><br>
+    <div class="row justify-content-center">
+    <div class="col col-md-6">
 
-      <label for="password">password: </label>
-      <input type="password" id="password" v-model="password"><br>
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title text-center mb-4 mt-3">로그인</h4>
+        <hr>
 
-      <ul v-if="errorMsg.length">
-        <li v-for="(msg, idx) in errorMsg" :key="idx">{{ msg }}</li>
-      </ul>
+        <form @submit.prevent="logIn">
+          <div class="mb-3">
+            <label for="username" class="form-label">아이디</label>
+            <input v-model="username" type="text" class="form-control" id="username" placeholder="아이디">
+          </div>
 
-      <input type="submit" value="로그인">
-    </form>
+          <div class="mb-4">
+            <label for="password" class="form-label">비밀번호</label>
+            <input v-model="password" type="password" class="form-control" id="password" placeholder="비밀번호">
+          </div>
 
-    <router-link :to="{ name: 'signup' }">회원가입하기</router-link>
+          <ul :class="{'text-danger mb-4' : errorMsg.length }">
+          <li v-for="(msg, idx) in errorMsg" :key="idx">{{ msg }}</li>
+          </ul>
+
+          <div class="d-grid gap-2">
+            <input type="submit" class="btn btn-outline-primary mb-1" value="로그인">
+            <router-link class="btn btn-primary" :to="{ name: 'signup' }">회원가입</router-link>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+
+    </div>
+    </div>
+
+  </div>
   </div>
 </template>
 
