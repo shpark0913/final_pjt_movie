@@ -90,11 +90,11 @@ def profile(request, username):
             movie_unlike.append(movieSerializer.data)
     if movie_like:
         for elt in movie_like:
-            for elt2 in elt['genres']:
-                if elt2['name'] not in like_genres:
-                    like_genres[elt2['name']] = 1
+            for elt_genre in elt['genres']:
+                if elt_genre['name'] not in like_genres:
+                    like_genres[elt_genre['name']] = 1
                 else:
-                    like_genres[elt2['name']] += 1
+                    like_genres[elt_genre['name']] += 1
 
     return Response({'userid': user.pk, 'username': user.username, 'likes': movie_like, 'unlikes': movie_unlike, 'review_all': reviewSerializer.data, 'like_genres': like_genres})
 
@@ -119,10 +119,11 @@ def recommend(request, movieid):
             movie_instance.save()
             for genre in movie.get('genre_ids'):
                 movie_instance.genres.add(genre)
-    m = movies['results']
-    return Response({'recommendations': m})
+    recommend_movies = movies['results']
+    return Response({'recommendations': recommend_movies})
 
 
+# 영화 credit 조회하기
 @api_view(['GET'])
 def movie_credit(request, movieid):
     request_url = f"https://api.themoviedb.org/3/movie/{movieid}/credits?api_key={API_KEY}&language=ko-KR"
