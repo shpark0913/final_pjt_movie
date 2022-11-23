@@ -34,16 +34,18 @@
 ### 3. 회원가입
 
 - 기본적인 인증 절차를 DRF의 기본 인증 방식 중 하나인 **TokenAuthentication** 으로 결정
+  
   - TokenAuthentication의 특징
     1. 간단히 구현 가능
     2. 기본적인 보안 기능 제공
     3. 다양한 외부 패키지 이용
 
-. settings.py에서 DEFAULT_AUTHENTICATION_CLASSES를 정의해서 TokenAuthentication 사용할 것임을 명시함
+- . settings.py에서 DEFAULT_AUTHENTICATION_CLASSES를 정의해서 TokenAuthentication 사용할 것임을 명시함
 
-. INSTALLED_APPS에 rest_framework.authtoken을 등록해 각 User마다 고유 Token이 생성되는 것을 확인
+- . INSTALLED_APPS에 rest_framework.authtoken을 등록해 각 User마다 고유 Token이 생성되는 것을 확인
 
 - dj-rest-auth 사용하기 위해 설치함
+  
   - Registration 기능을 사용하기 위해 django-allauth 설치
   - INSTALLED_APPS에 관련 App들 추가하고 SITE_ID = 1 설정
     - 현재 프로젝트가 첫번째 사이트임을 알 수 있다.
@@ -88,9 +90,7 @@
     
     ex) 특정 영화의 장르를 조회할 때
     
-    ```
-      url마다 integer로 응답하거나 text로 응답하는 등의 차이가 있음
-    ```
+       url마다 integer로 응답하거나 text로 응답하는 등의 차이가 있음
 
 - 방향 수정
   
@@ -440,7 +440,7 @@ def movie_credit(request, movieid):
     - `filter().first()` 와 동일한 역할을 한다.
   - review 가 여러 개 있을 수도 있으므로 get() 대신 filter()를 사용
 
-### movies app의 [models.py](http://models.py), [serializers.py](http://serializers.py), [views.py](http://views.py) 정리
+### movies app의 `models.py, serializer.py, views.py` 정리
 
 ### ERD 완성하기
 
