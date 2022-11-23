@@ -102,7 +102,7 @@ export default new Vuex.Store({
     // 2. 영화 관련
     // 2-1. index 화면에 보여줄 영화 리스트
     GET_MOVIE_LIST(state, movieList){
-      state.movieList = movieList.slice(0, 10);
+      state.movieList = movieList.slice(1, 50);
     },
     // 2-2. 영화 Detail
     GET_MOVIE_DETAIL(state, movie){

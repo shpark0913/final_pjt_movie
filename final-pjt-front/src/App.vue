@@ -5,7 +5,7 @@
       <ul class="nav nav-pills align-items-center justify-content-between">
         <!-- 로고 -->
         <li class="nav-item">
-          <div height="40px">
+          <div>
           <router-link class="nav-link navbar-brand" :to="{ name: 'indexView' }">
             <img src="@/assets/testlogo.png" alt="부기" height="40px">
             부귀영화
@@ -13,8 +13,19 @@
           </div>
         </li>
 
-        <li v-if="isLoggined" class="nav-item">
-          
+        <!-- 로그인 성공 시 -> 검색기능 -->
+        <li v-if="isLoggined" class="nav-item col-4">
+          <form class="d-flex" role="search" style="height: 40px" autocomplete="off" @submit.prevent="searchMovie">
+            <div class="autocomplete me-2" style="width: 80%" @click="floatSearchBox">
+              <input class="form-control" type="search" placeholder="Search" aria-label="Search" @keyup="filterMovieTitle">
+              <ul v-if="isFocused" class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </div>
+            <!-- <button class="btn btn-outline-success" type="submit">검색</button> -->
+          </form>
         </li>
         
         <!-- 로그인 성공 시 -> mypage -->
@@ -46,18 +57,38 @@
 
 <script>
 export default {
+  data(){
+    return{
+      searchMovieTitle: '',
+      filterMovieList: [],
+      isFocused: false,
+    }
+  },
   computed: {
     isLoggined(){
-      return this.$store.state.token
+      return this.$store.state.token;
     },
     username(){
-      return this.$store.state.username
+      return this.$store.state.username;
     },
+    movieList(){
+      return this.$store.state.movieList;
+    }
   },
   methods: {
     logout(){
       this.$store.commit('LOGOUT');
-    }
+    },
+    filterMovieTitle(e){
+      this.searchMovieTitle = e.target.value;
+      this.filterMovieList = this.movieList.filter((movie)=>{
+        return movie.title.includes(this.searchMovieTitle);
+      })
+    },
+    floatSearchBox(){
+      this.isFocused = !this.isFocused;
+      console.log(this.isFocused);
+    },
   },
 }
 </script>
@@ -73,6 +104,7 @@ export default {
 
 nav {
   padding: 1rem;
+  height: 72px;
 }
 
 .nav-link {
@@ -93,4 +125,10 @@ nav .dropdown-menu a.router-link-exact-active {
   cursor: pointer
 }
 
+/* search용 css */
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
 </style>
