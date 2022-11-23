@@ -420,9 +420,9 @@ def movie_credit(request, movieid):
 
 ### 목표
 
-1. movies/view.py의 profile 수정하기
+1. movies/views.py의 profile 수정하기
    1. review가 없을 때 profile 함수를 실행하면 오류 발생
-2. movies/models.py, movies/serializer.py, movies/view.py 정리하기
+2. movies/models.py, movies/serializers.py, movies/views.py 정리하기
 3. ERD 완성하기
 4. 발표 PPT 만들기
 

@@ -142,9 +142,7 @@
 
 #### FE
 
-- 
-
-## 5일차(221120)
+- ## 5일차(221120)
 
 #### BE
 
@@ -201,3 +199,17 @@
 - mypage 꾸미기
 
 - 내비게이션 가드 공부하고 다시 적용하기
+
+## 8일차(221123)
+
+#### BE
+
+- moveis/views.py의 profile 수정하기
+  
+  - review가 없을 때 profile 함수에서 발생하는 오류 해결
+
+- movies/models.py, movies/serializers.py, movies/views.py 정리하기
+
+- ERD 완성하기
+
+- 발표 PPT 제작하기
