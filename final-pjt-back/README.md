@@ -397,8 +397,6 @@ def profile(request, username):
 
 - movie_like_genre를 따로 만들지 않고 movie_like에서 data를 조회해 like_genres 완성
 
-
-
 ### movie의 pk를 사용해서 출연진 정보 불러오기
 
 - profile이 존재하는 배우만 5명 선별하기로 함
@@ -415,3 +413,49 @@ def movie_credit(request, movieid):
             if len(actor_all) == 5:break
     return Response({'credit': actor_all})
 ```
+
+---
+
+# **👍 8일차 (221123)**
+
+# 
+
+### 목표
+
+1. movies/view.py의 profile 수정하기
+   1. review가 없을 때 profile 함수를 실행하면 오류 발생
+2. movies/models.py, movies/serializer.py, movies/view.py 정리하기
+3. ERD 완성하기
+4. 발표 PPT 만들기
+
+
+
+### profile (movies/view.py) 수정하기
+
+- 기존 코드와 문제점
+  
+  - `reviews = get_list_or_404(Review)`
+  - Review가 비어있다면 404 에러코드가 발생하기 때문에 user의 profile page가 조회되지 않음
+
+- 수정 코드
+  
+  - `reviews = Review.objects.filter(user_id=user.pk)`
+  - get() 은 검색 결과에 해당하는 하나의 객체만을 반환
+    - `filter().first()` 와 동일한 역할을 한다.
+  - review 가 여러 개 있을 수도 있으므로 get() 대신 filter()를 사용
+
+- 
+
+### movies app의 [models.py](http://models.py), [serializers.py](http://serializers.py), [views.py](http://views.py) 정리
+
+
+
+### ERD 완성하기
+
+<img src="file:///C:/Users/multicampus/Desktop/ERD.drawio.png" title="" alt="ERD.drawio.png" width="311">
+
+
+
+### 발표 PPT 만들기
+
+- 추후 링크 또는 파일을 첨부할 예정
