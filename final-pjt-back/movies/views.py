@@ -26,7 +26,6 @@ def movie_list(request):
 # 단일 영화 조회
 @api_view(['GET'])
 def movie_detail(request, movieid):
-    # movie = Movie.objects.get(movieid=movieid)
     movie = get_object_or_404(Movie, movieid=movieid)
     serializer = MovieDetailSerializer(movie)
     return Response(serializer.data)
@@ -72,6 +71,7 @@ def want_user_pk(request, username):
     user = get_object_or_404(get_user_model(), username=username)
     return Response({'user_pk': user.pk})
 
+
 # username 받고 그 user가 좋아요, 싫어요 한 영화와 작성한 댓글 출력
 @api_view(['GET'])
 def profile(request, username):
@@ -81,6 +81,7 @@ def profile(request, username):
     movie_like = []
     movie_unlike = []
     like_genres = {}
+
     for review in reviews:
         movie = Movie.objects.get(movieid=review.movie_id)
         movieSerializer = MovieDetailSerializer(movie)
@@ -88,6 +89,7 @@ def profile(request, username):
             movie_like.append(movieSerializer.data)
         else:
             movie_unlike.append(movieSerializer.data)
+            
     if movie_like:
         for elt in movie_like:
             for elt_genre in elt['genres']:
@@ -120,6 +122,7 @@ def recommend(request, movieid):
             for genre in movie.get('genre_ids'):
                 movie_instance.genres.add(genre)
     recommend_movies = movies['results']
+
     return Response({'recommendations': recommend_movies})
 
 
@@ -129,10 +132,13 @@ def movie_credit(request, movieid):
     request_url = f"https://api.themoviedb.org/3/movie/{movieid}/credits?api_key={API_KEY}&language=ko-KR"
     credits_all = requests.get(request_url).json()
     actor_all = []
+
     for actor in credits_all['cast']:
         if actor['known_for_department'] == 'Acting' and actor['profile_path']:
             actor_all += [{'name': actor['name'], 'profile_path': actor['profile_path']}]
-            if len(actor_all) == 5:break
+            if len(actor_all) == 5:
+                break
+
     return Response({'credit': actor_all})
 
 
@@ -151,6 +157,7 @@ def get_movie_datas(request):
     for i in range(1, 30):
         request_url = f"https://api.themoviedb.org/3/movie/popular?api_key={API_KEY}&language=ko-KR&page={i}"
         movies = requests.get(request_url).json()
+
         for movie in movies['results']:
             movie_instance = Movie()
             movie_instance.title  = movie['title']
@@ -160,22 +167,27 @@ def get_movie_datas(request):
             movie_instance.vote_average = movie['vote_average']
             movie_instance.overview = movie['overview']
             movie_instance.poster_path = movie['poster_path']
-            # movie_instance.genres = movie.get('genre_ids')   
+
             if movie_instance.overview and movie_instance.release_date and movie_instance.poster_path and movie_instance.backdrop_path:
                 movie_instance.save()
+
                 for genre in movie.get('genre_ids'):
                     movie_instance.genres.add(genre)
+
     return HttpResponse()
 
 
 def get_genre(request):
     request_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={API_KEY}&language=ko-KR"
     genres = requests.get(request_url).json()
+
     for genre in genres['genres']:
         g = Genre()
         print(genre)
         g.genreid = genre['id']
         g.name = genre['name']
+
         if g.genreid and g.name:
             g.save()
+            
     return HttpResponse()
