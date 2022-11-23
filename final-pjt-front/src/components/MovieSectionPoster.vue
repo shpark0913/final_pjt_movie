@@ -70,7 +70,7 @@ export default {
   position: absolute;
   bottom: 0;
   left: 0;
-  z-index: 99;
+  /* z-index: 90; */
   transition: all 0.4s;
 }
 

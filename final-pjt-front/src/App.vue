@@ -103,7 +103,7 @@ export default {
 }
 
 .container{
-  padding-top: 72px
+  margin-top: 72px;
 }
 
 nav {
