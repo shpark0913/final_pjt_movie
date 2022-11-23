@@ -7,7 +7,7 @@
 
 ### 2. 기본 설정
 
-- 기본 User 모델 ****변경
+- 기본 User 모델 변경
   
   - AUTH_USER_MODEL을 **accounts.User** 모델로 변경
 
