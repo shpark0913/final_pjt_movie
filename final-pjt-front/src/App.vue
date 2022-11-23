@@ -102,9 +102,17 @@ export default {
   /* color: #2c3e50; */
 }
 
+.container{
+  padding-top: 72px
+}
+
 nav {
   padding: 1rem;
   height: 72px;
+  top: 0;
+  background: white;
+  width: 100%;
+  position: fixed;
 }
 
 .nav-link {
