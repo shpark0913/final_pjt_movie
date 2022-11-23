@@ -418,8 +418,6 @@ def movie_credit(request, movieid):
 
 # **👍 8일차 (221123)**
 
- 
-
 ### 목표
 
 1. movies/view.py의 profile 수정하기
@@ -442,15 +440,11 @@ def movie_credit(request, movieid):
     - `filter().first()` 와 동일한 역할을 한다.
   - review 가 여러 개 있을 수도 있으므로 get() 대신 filter()를 사용
 
-
-
 ### movies app의 [models.py](http://models.py), [serializers.py](http://serializers.py), [views.py](http://views.py) 정리
-
-
 
 ### ERD 완성하기
 
-
+<img src="https://user-images.githubusercontent.com/109323665/203455824-9894fccf-8d1a-4b0a-9461-462674364e08.png" title="" alt="ERD drawio" width="352">
 
 ### PPT 만들기
 
