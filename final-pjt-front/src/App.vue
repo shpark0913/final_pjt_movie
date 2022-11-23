@@ -12,6 +12,10 @@
           </router-link>
           </div>
         </li>
+
+        <li v-if="isLoggined" class="nav-item">
+          
+        </li>
         
         <!-- 로그인 성공 시 -> mypage -->
         <li v-if="isLoggined" class="nav-item dropdown">

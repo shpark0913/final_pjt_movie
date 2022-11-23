@@ -11,14 +11,14 @@
         <hr>
 
         <form @submit.prevent="logIn">
-          <div class="mb-3">
-            <label for="username" class="form-label">아이디</label>
+          <div class="form-floating mb-3">
             <input v-model="username" type="text" class="form-control" id="username" placeholder="아이디">
+            <label for="username" class="form-label">아이디</label>
           </div>
 
-          <div class="mb-4">
-            <label for="password" class="form-label">비밀번호</label>
+          <div class="form-floating mb-4">
             <input v-model="password" type="password" class="form-control" id="password" placeholder="비밀번호">
+            <label for="password" class="form-label">비밀번호</label>
           </div>
 
           <ul :class="{'text-danger mb-4' : errorMsg.length }">
@@ -27,7 +27,7 @@
 
           <div class="d-grid gap-2">
             <input type="submit" class="btn btn-outline-primary mb-1" value="로그인">
-            <router-link class="btn btn-primary" :to="{ name: 'signup' }">회원가입</router-link>
+            <router-link class="btn btn-primary" :to="{ name: 'signup' }">회원가입 하기</router-link>
           </div>
         </form>
         
