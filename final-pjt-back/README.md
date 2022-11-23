@@ -418,7 +418,7 @@ def movie_credit(request, movieid):
 
 # **👍 8일차 (221123)**
 
-# 
+ 
 
 ### 목표
 
@@ -427,8 +427,6 @@ def movie_credit(request, movieid):
 2. movies/models.py, movies/serializer.py, movies/view.py 정리하기
 3. ERD 완성하기
 4. 발표 PPT 만들기
-
-
 
 ### profile (movies/view.py) 수정하기
 
@@ -444,7 +442,7 @@ def movie_credit(request, movieid):
     - `filter().first()` 와 동일한 역할을 한다.
   - review 가 여러 개 있을 수도 있으므로 get() 대신 filter()를 사용
 
-- 
+
 
 ### movies app의 [models.py](http://models.py), [serializers.py](http://serializers.py), [views.py](http://views.py) 정리
 
@@ -452,10 +450,8 @@ def movie_credit(request, movieid):
 
 ### ERD 완성하기
 
-<img src="file:///C:/Users/multicampus/Desktop/ERD.drawio.png" title="" alt="ERD.drawio.png" width="311">
 
 
-
-### 발표 PPT 만들기
+### PPT 만들기
 
 - 추후 링크 또는 파일을 첨부할 예정
