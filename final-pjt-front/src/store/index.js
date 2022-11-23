@@ -108,6 +108,7 @@ export default new Vuex.Store({
     GET_MOVIE_DETAIL(state, movie){
       state.movieDetail = movie;
     },
+    // 2-3. 최신 영화 10개?
 
     // 3. 리뷰 관련
     // 3-1. 리뷰 리스트

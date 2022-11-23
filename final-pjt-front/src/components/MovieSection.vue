@@ -1,13 +1,19 @@
 <template>
   <div>
-    <h2>영화 섹션</h2>
-    <div class="movieIndexPoster">
-      <MovieSectionPoster
-        v-for="movie in movieList"
-        :key="movie.movieid"
-        :movie="movie"
-      />
-  </div>
+
+    <div class="py-5">
+    <h1 class="mb-0">영화</h1>
+    
+    <div class="row">
+        <MovieSectionPoster 
+          v-for="movie in movieList"
+          :key="movie.movieid"
+          :movie="movie"
+        />
+    </div>
+
+    </div>
+
   </div>
 </template>
 
@@ -36,7 +42,4 @@ export default {
 </script>
 
 <style>
-.movieIndexPoster{
-  display: flex;
-}
 </style>

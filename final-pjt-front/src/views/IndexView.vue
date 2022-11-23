@@ -1,6 +1,10 @@
 <template>
   <div>
-    <MovieSection/>
+    <div class="container">
+
+      <MovieSection />
+
+    </div>
   </div>
 </template>
 
