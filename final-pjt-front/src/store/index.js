@@ -14,6 +14,15 @@ export default new Vuex.Store({
     userpk: sessionStorage.getItem('userpk'),
     token: sessionStorage.getItem('token'),    // 로그인 토큰
     errors: [],                                // 로그인, 회원가입 실패 시 띄울 오류 문구
+    translateErrors: {
+      'This field may not be null.': '빈 칸이 존재하면 안됩니다.',
+      'Unable to log in with provided credentials.': '아이디나 비밀번호가 틀렸습니다.',
+      'A user with that username already exists.': '이미 존재하는 아이디입니다.',
+      'This password is entirely numeric.': '비밀번호는 숫자와 문자로 이루어져야 합니다.',
+      'This password is too short. It must contain at least 8 characters.': '비밀번호가 너무 짧습니다. 최소 8글자 이상 입력해주세요.',
+      'This password is too common.': '보안에 취약한 비밀번호입니다.',
+      "The two password fields didn't match.": '비밀번호가 일치하지 않습니다',
+    },
 
     // 영화 관련 Data
     movieList: [],        // index에 띄울 movieList
@@ -78,7 +87,12 @@ export default new Vuex.Store({
     },
     // 1-3. 로그인/회원가입 시 에러메시지 저장
     ERROR_MSG(state, msg){
-      state.errors.push(msg);
+      if(state.errors.includes(state.translateErrors[msg])){
+        return;
+      }
+      else{
+        state.errors.push(state.translateErrors[msg]);
+      }
     },
     // 1-4. 에러메시지 초기화 (안그러면 계속 에러 메시지가 쌓임!)
     RESET_ERROR_MSG(state){
@@ -88,12 +102,13 @@ export default new Vuex.Store({
     // 2. 영화 관련
     // 2-1. index 화면에 보여줄 영화 리스트
     GET_MOVIE_LIST(state, movieList){
-      state.movieList = movieList.slice(0, 10);
+      state.movieList = movieList.slice(1, 50);
     },
     // 2-2. 영화 Detail
     GET_MOVIE_DETAIL(state, movie){
       state.movieDetail = movie;
     },
+    // 2-3. 최신 영화 10개?
 
     // 3. 리뷰 관련
     // 3-1. 리뷰 리스트
