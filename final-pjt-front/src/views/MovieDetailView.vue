@@ -36,9 +36,6 @@ export default {
     movie(){
       return this.$store.state.movieDetail;
     },
-    backgroundImgPath(){
-      return `https://www.themoviedb.org/t/p/original${this.movie.backdrop_path}`;
-    }
   },
   methods: {
     getMovieDetail(){

@@ -11,9 +11,9 @@ export default new Vuex.Store({
   state: {
     // 로그인 관련 Data
     username: sessionStorage.getItem('username'),
-    userlike: sessionStorage.getItem('userlike'),
     userpk: sessionStorage.getItem('userpk'),
     token: sessionStorage.getItem('token'),    // 로그인 토큰
+    userlike: [],
     errors: [],                                // 로그인, 회원가입 실패 시 띄울 오류 문구
     translateErrors: {
       'This field may not be null.': '빈 칸이 존재하면 안됩니다.',
@@ -28,27 +28,7 @@ export default new Vuex.Store({
     // 영화 관련 Data
     movieList: [],        // index에 띄울 movieList
     movieDetail: null,    // movieDetail 페이지에 띄울 영화 담기
-    genreList: {
-      12: '모험',
-      14: '판타지',
-      16: '애니메이션',
-      18: '드라마',
-      27: '공포',
-      28: '액션',
-      35: '코미디',
-      36: '역사',
-      37: '서부',
-      53: '스릴러',
-      80: '범죄',
-      99: '다큐멘터리',
-      878: 'SF',
-      9648: '미스터리',
-      10402: '음악',
-      10749: '로맨스',
-      10751: '가족',
-      10752: '전쟁',
-      10770: 'TV 영화'
-    },
+    movieListRecommendation: [],
 
     // 리뷰 관련 Data
     reviewList: null,     // 특정 영화에 대한 reviewList
@@ -71,11 +51,11 @@ export default new Vuex.Store({
       state.token = userinfo.token;
       state.username = userinfo.username;
       state.userpk = userinfo.userpk;
-      state.userlike = userinfo.userlike;
+      // state.userlike = userinfo.userlike;
       sessionStorage.setItem('token', userinfo.token);
       sessionStorage.setItem('username', userinfo.username);
       sessionStorage.setItem('userpk', userinfo.userpk);
-      sessionStorage.setItem('userlike', userinfo.userlike);
+      // sessionStorage.setItem('userlike', userinfo.userlike);
       router.push({ name: 'indexView' });
     },
     // 1-2. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
@@ -83,11 +63,9 @@ export default new Vuex.Store({
       state.token = null;
       state.username = null;
       state.userpk = null;
-      state.userlike = null;
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('username');
       sessionStorage.removeItem('userpk');
-      sessionStorage.removeItem('userlike');
       router.push({ name: 'login' });
     },
     // 1-3. 로그인/회원가입 시 에러메시지 저장
@@ -107,16 +85,19 @@ export default new Vuex.Store({
     // 2. 영화 관련
     // 2-1. index 화면에 보여줄 영화 리스트
     GET_MOVIE_LIST(state, movieList){
-      state.movieList = movieList.slice(1, 50);
+      state.movieList = movieList;
     },
     // 2-2. 영화 Detail
     GET_MOVIE_DETAIL(state, movie){
       state.movieDetail = movie;
     },
+    GET_MOVIE_LIST_RECOMMENDATION(state, movieList){
+      state.movieListRecommendation = movieList;
+    },
     // 2-3. 좋아요 한 영화 목록 업데이트
     UPDATE_USER_LIKE(state, userlike){
       state.userlike = userlike;
-      sessionStorage.setItem('userlike', JSON.stringify(userlike));
+      // sessionStorage.setItem('userlike', JSON.stringify(userlike));
     },
 
     // 3. 리뷰 관련
@@ -200,17 +181,17 @@ export default new Vuex.Store({
             token: userinfo.token,
             username: userinfo.username,
             userpk: response.data.userid,
-            userlike: response.data.likes
+            // userlike: response.data.likes
           }
-          console.log(userInfo.userlike);
-          console.log(typeof(userInfo.userlike));
+          // console.log(userInfo.userlike);
+          // console.log(typeof(userInfo.userlike));
           context.commit('SAVE_USER_INFO', userInfo)
         })
         .catch((error)=>{
           console.log(error);
         })
     },
-    // 1-4. user가 리뷰를 create, update, delete 할 때 좋아요 한 영화 목록 다시 가져오기
+    // 1-4. user가 index 페이지에 접근할 때 좋아요 한 영화 목록 다시 가져오기
     getUserLike(context, username){
       axios({
         method: 'GET',
@@ -218,8 +199,6 @@ export default new Vuex.Store({
       })
         .then((response)=>{
           const userlike = response.data.likes;
-          // console.log(userInfo.userlike);
-          // console.log(typeof(userInfo.userlike));
           context.commit('UPDATE_USER_LIKE', userlike)
         })
         .catch((error)=>{
@@ -256,6 +235,19 @@ export default new Vuex.Store({
           router.replace({ name: 'notFound' });
         })
     },
+    getMovieListRecommendation(context, movieid){
+      axios({
+        method: 'GET',
+        url: `${API_URL}/movies/${movieid}/recommendations/`,
+      })
+        .then((response)=>{
+          context.commit('GET_MOVIE_LIST_RECOMMENDATION', response.data.recommendations);
+        })
+        .catch((error)=>{
+          console.log(error);
+          router.push({ name: 'notFound' });
+        })
+    },
 
     // 3. 리뷰 관련
     // 3-1. Create - 리뷰 작성하기
@@ -274,7 +266,7 @@ export default new Vuex.Store({
       })
         .then(()=>{
           context.dispatch('getReviews', review.movieid);
-          context.dispatch('getUserLike', review.username);
+          // context.dispatch('getUserLike', review.username);
         })
         .catch((error)=>{
           console.log(error);
@@ -302,9 +294,9 @@ export default new Vuex.Store({
         url: `${API_URL}/movies/review/${review.reviewid}/`
       })
         .then(()=>{
-          context.dispatch('getUserLike', review.username);
-          console.log('삭제');
-          console.log(review.username);
+          // context.dispatch('getUserLike', review.username);
+          // console.log('삭제');
+          // console.log(review.username);
           context.dispatch('getReviews', review.movieid);
         })
         .catch((error)=>{
@@ -327,9 +319,9 @@ export default new Vuex.Store({
       })
         .then((response)=>{
           console.log(response);
-          console.log('리뷰수정');
-          console.log(review.username);
-          context.dispatch('getUserLike', review.username);
+          // console.log('리뷰수정');
+          // console.log(review.username);
+          // context.dispatch('getUserLike', review.username);
           context.dispatch('getReviews', review.movieid);
         })
         .catch((error)=>{

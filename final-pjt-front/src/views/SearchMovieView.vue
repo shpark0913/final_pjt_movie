@@ -5,14 +5,15 @@
       <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="width: 50%" @keyup="filterMovieTitle">
     </form>
 
-    <div v-if="filterMovieList.length" class="row" >
+    <div v-if="filterMovieList.length" class="row mt-3" >
       <MovieSectionPoster
         v-for="movie in filterMovieList"
         :key="`searchMovie-${movie.title}`"
         :movie="movie"
       />
     </div>
-    <div v-else>검색 결과가 없습니다.</div>
+    <h5 class="text-center text-muted mt-5" v-else-if="searchMovieTitle">검색 결과가 없습니다.</h5>
+    <h5 class="text-center text-muted mt-5" v-else>영화 이름 검색</h5>
   </div>
 </template>
 
@@ -38,11 +39,22 @@ export default {
   methods: {
     filterMovieTitle(e){
       this.searchMovieTitle = e.target.value;
+
+      if (this.searchMovieTitle === ''){
+        return this.filterMovieList = [];
+      }
       this.filterMovieList = this.movieList.filter((movie)=>{
         return movie.title.includes(this.searchMovieTitle);
       })
+      console.log(this.filterMovieList);
     },
-  }
+    getMovieList(){
+      this.$store.dispatch('getMovieList');
+    },
+  },
+  created(){
+    this.getMovieList();
+  },
 }
 </script>
 

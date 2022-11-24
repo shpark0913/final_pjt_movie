@@ -1,14 +1,13 @@
 <template>
   <div>
 
-    <h1 class="pt-3">영화</h1>
-    
+    <h3 class="pt-5 pb-4">🎬<span class="fw-bold">{{ movie.title }}</span>🎬 매니아를 위한 추천!</h3>
     <div class="row">
-        <MovieSectionPoster 
-          v-for="movie in movieList"
-          :key="movie.movieid"
-          :movie="movie"
-        />
+      <MovieSectionPoster 
+        v-for="recommendMovie in movieList"
+        :key="recommendMovie.id"
+        :movie="recommendMovie"
+      />
     </div>
 
     </div>
@@ -23,18 +22,21 @@ export default {
   components: {
     MovieSectionPoster,
   },
+  props: {
+    movie: Object,
+  },
   computed: {
     movieList(){
-      return this.$store.state.movieList;
+      return this.$store.state.movieListRecommendation;
     }
   },
   methods:{
-    getMovieList(){
-      this.$store.dispatch('getMovieList');
+    getMovieListRecommendation(){
+      this.$store.dispatch('getMovieListRecommendation', this.movie.movieid);
     },
   },
   created(){
-    this.getMovieList();
+    this.getMovieListRecommendation();
   },
 }
 </script>
