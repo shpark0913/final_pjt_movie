@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
     <div class="col col-md-6">
 
-    <div class="card">
+    <div class="card mt-5">
       <div class="card-body">
         <h4 class="card-title text-center mb-4 mt-3">로그인</h4>
         <hr>

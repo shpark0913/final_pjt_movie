@@ -20,7 +20,10 @@ const routes = [
     component: IndexView,
     beforeEnter(to, from, next){
       const isLoginned = store.getters.isLogin;
-      if (isLoginned){ next() }
+      if (isLoginned){
+        store.dispatch('getUserLike', store.state.username);
+        next();
+      }
       else { next({ name: 'login' }) }
     }
   },

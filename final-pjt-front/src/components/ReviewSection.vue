@@ -89,14 +89,12 @@
     <div v-if="typeof reviewList === 'string'">
       {{ reviewList }}
     </div>
-    <div v-else class="container mt-3">
-      <div class="row">
-        <ReviewSectionItem 
-          v-for="review in reviewList"
-          :key="review.id"
-          :review="review"
-        />
-      </div>  
+    <div v-else class="container mt-3 row">
+      <ReviewSectionItem 
+        v-for="review in reviewList"
+        :key="review.id"
+        :review="review"
+      />
     </div>
   </div>
 </template>

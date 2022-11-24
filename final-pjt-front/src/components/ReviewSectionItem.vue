@@ -22,8 +22,5 @@ export default {
 </script>
 
 <style>
-.editBtn{
-  cursor: pointer;
-  border: 1px solid black;
-}
+
 </style>
