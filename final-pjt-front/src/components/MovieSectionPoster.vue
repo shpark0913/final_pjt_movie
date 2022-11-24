@@ -1,5 +1,4 @@
 <template>
-
   <div class="col-12 col-md-3 mb-3 pointer">
 
     <div class="card" @click="movieDetail">
@@ -15,7 +14,6 @@
     </div>
 
   </div>
-
 </template>
 
 <script>

@@ -8,7 +8,7 @@
     <div v-if="filterMovieList.length" class="row mt-3" >
       <MovieSectionPoster
         v-for="movie in filterMovieList"
-        :key="`searchMovie-${movie.title}`"
+        :key="`searchMovie-${movie.movieid}`"
         :movie="movie"
       />
     </div>
@@ -39,14 +39,12 @@ export default {
   methods: {
     filterMovieTitle(e){
       this.searchMovieTitle = e.target.value;
-
       if (this.searchMovieTitle === ''){
         return this.filterMovieList = [];
       }
       this.filterMovieList = this.movieList.filter((movie)=>{
         return movie.title.includes(this.searchMovieTitle);
       })
-      console.log(this.filterMovieList);
     },
     getMovieList(){
       this.$store.dispatch('getMovieList');

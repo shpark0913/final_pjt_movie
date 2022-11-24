@@ -32,8 +32,8 @@
                   <label for="reviewContent">내용</label>
                 </div>
 
-                <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
-                <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
+                <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good" class="pr-2 pointer">재밌어요😀</label>
+                <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad" class="pointer">별로에요🤮</label>
               </form>
             </div>
   
@@ -63,14 +63,12 @@
   
             <div class="modal-body">
               <form>
-                <div class="mb-3">
-                  <div class="form-floating mb-3">
-                    <textarea required class="form-control" v-model="content" placeholder="리뷰를 남깁시다." id="reviewContent" style="height: 100px"></textarea>
-                    <label for="reviewContent">내용</label>
-                  </div>
-                  <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
-                  <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
+                <div class="form-floating mb-3">
+                  <textarea required class="form-control" v-model="content" placeholder="리뷰를 남깁시다." id="reviewContent" style="height: 100px"></textarea>
+                  <label for="reviewContent">내용</label>
                 </div>
+                <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good" class="pr-2 pointer">재밌어요😀</label>
+                <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad" class="pointer">별로에요🤮</label>
               </form>
             </div>
   
@@ -85,16 +83,18 @@
     </div>
 
     
-    <h3>모든 리뷰</h3>
-    <div v-if="typeof reviewList === 'string'">
-      {{ reviewList }}
-    </div>
-    <div v-else class="container mt-3 row">
+    <div v-if="reviewList?.length" class="container row">
+      <h3 class="fw-bold mb-3">모든 리뷰</h3>
       <ReviewSectionItem 
         v-for="review in reviewList"
         :key="review.id"
         :review="review"
       />
+      
+    </div>
+    <div v-else class="text-center pt-3 mb-5">
+      리뷰가 존재하지 않습니다😥<br>
+      가장 먼저 작성해볼까요?
     </div>
   </div>
 </template>

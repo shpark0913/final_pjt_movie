@@ -13,7 +13,6 @@ export default new Vuex.Store({
     username: sessionStorage.getItem('username'),
     userpk: sessionStorage.getItem('userpk'),
     token: sessionStorage.getItem('token'),    // 로그인 토큰
-    userlike: [],
     errors: [],                                // 로그인, 회원가입 실패 시 띄울 오류 문구
     translateErrors: {
       'This field may not be null.': '빈 칸이 존재하면 안됩니다.',
@@ -24,10 +23,11 @@ export default new Vuex.Store({
       'This password is too common.': '보안에 취약한 비밀번호입니다.',
       "The two password fields didn't match.": '비밀번호가 일치하지 않습니다',
     },
-
+    
     // 영화 관련 Data
     movieList: [],        // index에 띄울 movieList
     movieDetail: null,    // movieDetail 페이지에 띄울 영화 담기
+    userlike: [],         // 로그인한 유저가 좋아하는 영화 리스트
     movieListRecommendation: [],
 
     // 리뷰 관련 Data
@@ -51,11 +51,9 @@ export default new Vuex.Store({
       state.token = userinfo.token;
       state.username = userinfo.username;
       state.userpk = userinfo.userpk;
-      // state.userlike = userinfo.userlike;
       sessionStorage.setItem('token', userinfo.token);
       sessionStorage.setItem('username', userinfo.username);
       sessionStorage.setItem('userpk', userinfo.userpk);
-      // sessionStorage.setItem('userlike', userinfo.userlike);
       router.push({ name: 'indexView' });
     },
     // 1-2. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
@@ -91,13 +89,14 @@ export default new Vuex.Store({
     GET_MOVIE_DETAIL(state, movie){
       state.movieDetail = movie;
     },
-    GET_MOVIE_LIST_RECOMMENDATION(state, movieList){
-      state.movieListRecommendation = movieList;
-    },
-    // 2-3. 좋아요 한 영화 목록 업데이트
+    // 2-3. 사용자가 좋아요 한 영화 목록 업데이트
     UPDATE_USER_LIKE(state, userlike){
       state.userlike = userlike;
       // sessionStorage.setItem('userlike', JSON.stringify(userlike));
+    },
+    // 2-4. 사용자가 좋아한 영화와 관련된 추천영화 리스트
+    GET_MOVIE_LIST_RECOMMENDATION(state, movieList){
+      state.movieListRecommendation = movieList.slice(0, 20);
     },
 
     // 3. 리뷰 관련
@@ -170,52 +169,35 @@ export default new Vuex.Store({
           }
         })
     },
-    // 1-3. 로그인과 회원가입 시 유저의 정보 추가로 얻기(pk랑 좋아요 한 영화)
+    // 1-3. 로그인과 회원가입 시 유저의 정보 추가로 얻기(pk)
     saveUserInfo(context, userinfo){
       axios({
         method: 'GET',
-        url: `${API_URL}/movies/user/${userinfo.username}/profile/`
+        url: `${API_URL}/movies/user/${userinfo.username}/`
       })
         .then((response)=>{
           const userInfo = {
             token: userinfo.token,
             username: userinfo.username,
-            userpk: response.data.userid,
-            // userlike: response.data.likes
+            userpk: response.data.user_pk,
           }
-          // console.log(userInfo.userlike);
-          // console.log(typeof(userInfo.userlike));
           context.commit('SAVE_USER_INFO', userInfo)
         })
         .catch((error)=>{
           console.log(error);
         })
     },
-    // 1-4. user가 index 페이지에 접근할 때 좋아요 한 영화 목록 다시 가져오기
-    getUserLike(context, username){
-      axios({
-        method: 'GET',
-        url: `${API_URL}/movies/user/${username}/profile/`
-      })
-        .then((response)=>{
-          const userlike = response.data.likes;
-          context.commit('UPDATE_USER_LIKE', userlike)
-        })
-        .catch((error)=>{
-          console.log(error);
-        })
-    },
-
+    
     // 2. 영화 관련
-    // 2-1. 영화 전체 데이터 불러오기
+    // 2-1. 영화 전체 데이터 불러오기(검색용)
     getMovieList(context){
       axios({
         method: 'GET',
         url: `${API_URL}/movies/`,
       })
-        .then((response)=>{
-          context.commit('GET_MOVIE_LIST', response.data);
-        })
+      .then((response)=>{
+        context.commit('GET_MOVIE_LIST', response.data);
+      })
         .catch((error)=>{
           console.log(error);
           router.push({ name: 'notFound' });
@@ -227,14 +209,15 @@ export default new Vuex.Store({
         method: 'GET',
         url: `${API_URL}/movies/${movieid}/`,
       })
-        .then((response)=>{
-          context.commit('GET_MOVIE_DETAIL', response.data)
-        })
-        .catch((error)=>{
-          console.log(error);
-          router.replace({ name: 'notFound' });
-        })
+      .then((response)=>{
+        context.commit('GET_MOVIE_DETAIL', response.data)
+      })
+      .catch((error)=>{
+        console.log(error);
+        router.replace({ name: 'notFound' });
+      })
     },
+    // 2-3. 사용자가 좋아한 영화와 관련된 추천 영화 받아오기
     getMovieListRecommendation(context, movieid){
       axios({
         method: 'GET',
@@ -247,7 +230,21 @@ export default new Vuex.Store({
           console.log(error);
           router.push({ name: 'notFound' });
         })
-    },
+      },
+      // 2-4. user가 index 페이지에 접근할 때마다 좋아요 한 영화 목록 다시 가져오기
+      getUserLike(context, username){
+        axios({
+          method: 'GET',
+          url: `${API_URL}/movies/user/${username}/profile/`
+        })
+          .then((response)=>{
+            const userlike = response.data.likes;
+            context.commit('UPDATE_USER_LIKE', userlike)
+          })
+          .catch((error)=>{
+            console.log(error);
+          })
+      },
 
     // 3. 리뷰 관련
     // 3-1. Create - 리뷰 작성하기
@@ -266,7 +263,6 @@ export default new Vuex.Store({
       })
         .then(()=>{
           context.dispatch('getReviews', review.movieid);
-          // context.dispatch('getUserLike', review.username);
         })
         .catch((error)=>{
           console.log(error);
@@ -283,8 +279,6 @@ export default new Vuex.Store({
         })
         .catch((error)=>{
           console.log(error);
-          context.commit('GET_REVIEWS', '리뷰가 존재하지 않습니다😥');
-          
         })
     },
     // 3-3. Delete - 리뷰 삭제
@@ -294,9 +288,6 @@ export default new Vuex.Store({
         url: `${API_URL}/movies/review/${review.reviewid}/`
       })
         .then(()=>{
-          // context.dispatch('getUserLike', review.username);
-          // console.log('삭제');
-          // console.log(review.username);
           context.dispatch('getReviews', review.movieid);
         })
         .catch((error)=>{
@@ -319,9 +310,6 @@ export default new Vuex.Store({
       })
         .then((response)=>{
           console.log(response);
-          // console.log('리뷰수정');
-          // console.log(review.username);
-          // context.dispatch('getUserLike', review.username);
           context.dispatch('getReviews', review.movieid);
         })
         .catch((error)=>{
@@ -336,11 +324,11 @@ export default new Vuex.Store({
         url: `${API_URL}/movies/user/${username}/profile/`
       })
         .then((response)=>{
-          console.log(response);
           context.commit('GET_USER_PROFILE', response.data);
         })
         .catch((error)=>{
           console.log(error);
+          router.push({ name: 'notFound' });
         })
     }
   },

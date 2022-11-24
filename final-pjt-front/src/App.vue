@@ -30,9 +30,9 @@
       </div>
 
       <li class="nav-item">
-        <router-link class="nav-link navbar-brand" :to="{ name: 'indexView' }">
-          <img src="@/assets/testlogo.png" alt="부기" height="40px">
-          부귀영화
+        <router-link class="nav-link navbar-brand fw-bolder" :to="{ name: 'indexView' }">
+          <img src="@/assets/boogie-logo.png" alt="부기" height="40px">
+          부기영화
         </router-link>
       </li>
     </ul>
@@ -61,11 +61,8 @@ export default {
 
 <style>
 #app {
-  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
-  /* color: #2c3e50; */
 }
 
 .nav-link {
@@ -90,4 +87,8 @@ nav .dropdown-menu a.router-link-exact-active {
   margin-top: 66px;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
+body * {
+  font-family: 'Noto Sans KR', sans-serif;
+}
 </style>

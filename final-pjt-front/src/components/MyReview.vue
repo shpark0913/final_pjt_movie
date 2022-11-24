@@ -6,7 +6,7 @@
         <div class="col-md-2">
           <img 
             :src="`https://www.themoviedb.org/t/p/original${review.poster_path}`" 
-            class="img-fluid rounded pointer" 
+            class="img-fluid rounded pointer shadow" 
             @click="movieDetail"
           >
         </div>

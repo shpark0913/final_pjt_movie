@@ -77,11 +77,6 @@ const routes = [
       else { next({ name: 'login' }) }
     }
   },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   component: () => import('../views/AboutView.vue')
-  // }
   {
     path: '/notfound',
     name: 'notFound',
