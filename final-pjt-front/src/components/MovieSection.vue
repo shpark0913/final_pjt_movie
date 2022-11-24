@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h1 class="mb-0">영화</h1>
+    <h1 class="pt-3">영화</h1>
     
     <div class="row">
         <MovieSectionPoster 
