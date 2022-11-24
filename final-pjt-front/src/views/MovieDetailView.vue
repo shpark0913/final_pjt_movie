@@ -1,33 +1,26 @@
 <template>
   <div>
-    <div v-if="movie">
-      
-      <div class="movieDetailCard rounded container px-5">
+    <div v-if="movie" class="container px-5">
 
-          <h1>{{ movie.title }}</h1>
-
-        
-        <div class="row py-3">
-          <div class="col-4">
-            <img id="moviePoster" :src="`https://www.themoviedb.org/t/p/original${movie.poster_path}`">
-          </div>
-          <div class="col-8 d-flex flex-column">
-            <p>개봉 | {{ movie.release_date }}</p>
-            <p>평점 | {{ movie.vote_average }}</p>
-            <p>장르 | <span v-for="genre in movie.genres" :key="genre.genreid">{{ genre.name }} </span></p>
-            <p>{{ movie.overview }}</p>
-          </div>
+      <h1 class="pt-3">{{ movie.title }}</h1>        
+      <div class="row py-3">
+        <div class="col-3">
+          <img id="moviePoster" :src="`https://www.themoviedb.org/t/p/original${movie.poster_path}`">
         </div>
-
-        <ReviewSection 
-          :movie="movie"
-        />
+        <div class="col-9 d-flex flex-column">
+          <p><span class="fw-bold">📆 개봉</span> | {{ movie.release_date }}</p>
+          <p><span class="fw-bold">⭐ 평점</span> | {{ movie.vote_average }}</p>
+          <p><span class="fw-bold">🎬 장르</span> | <span v-for="genre in movie.genres" :key="genre.genreid">{{ genre.name }}, </span></p>
+          <p class="mb-1"><span class="fw-bold">📜 줄거리</span></p>
+          <p>{{ movie.overview }}</p>
+        </div>
       </div>
 
-      <div class="detailOverlay"></div>
-
-
+      <ReviewSection 
+        :movie="movie"
+      />
     </div>
+
   </div>
 </template>
 
@@ -63,6 +56,7 @@ export default {
 
 #moviePoster{
   width: 100%;
+  border-radius: 5px;
 }
 
 </style>

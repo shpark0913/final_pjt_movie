@@ -1,65 +1,102 @@
 <template>
-  <div>
+  <div class="pb-3">
 
-    
     <!-- 만약 내 리뷰가 존재하면? 수정하기만 가능 -->
     <div v-if="myReview">
-      <!-- 수정할거면 수정하는 창 띄우기 -->
-      <div v-if="isUpdating">
-        <h3>내 리뷰 수정하기</h3>
-        <form @submit.prevent="updateReview">
-          <label for="my-review">리뷰 수정하기</label><br>
-          <textarea required v-model="content" id="my-review" cols="30" rows="10"></textarea><br><br>
-          <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
-          <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
-          <br>
-          <br>
-          <input type="submit" value="수정하기">
-        </form>
-        <span class="editBtn" @click="toggleUpdate">취소하기</span>
-      </div>
 
-      <!-- 수정하는거 아니면 그냥 내가 썼던 리뷰 보이기 -->
-      <div v-else>
-        <h3>내 리뷰</h3>
-        <p v-if="myReview.vote_average === true ">평점 | 재밌어요😀</p>
-        <p v-else>평점 | 별로에요🤮</p>
-        <p>평가 | {{ myReview.content }}</p>
-        <span class="editBtn" @click="toggleUpdate">수정하기</span>
-        <span class="editBtn" @click="deleteReview">  삭제하기</span>
+      <div class="card col-12 mb-5">
+        <div class="card-body">
+          <h5 class="card-title">내 리뷰</h5>
+          <p v-if="myReview.vote_average" class="card-subtitle mb-2 text-muted">재밌어요😀</p>
+          <p v-else class="card-subtitle mb-2 text-muted">별로에요🤮</p>
+          <p class="card-text">{{ myReview.content }}</p>
+          <button type="button" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#updateReview">리뷰 수정하기</button>
+          <button type="button" class="btn btn-danger" @click="deleteReview">리뷰 삭제하기</button>
+        </div>
       </div>
-
-    </div>
-    <!-- ---------------------------------- -->
-    <!-- 만약 내 리뷰가 존재하지 않으면? 작성하기만 가능 -->
-    <div v-else>
-      <h3 >영화 리뷰 작성하기</h3>
-      <div id="writeReview">
-        <form @submit.prevent="createReview">
-          <label for="my-review">리뷰 작성하기</label><br>
-          <textarea required v-model="content" id="my-review" cols="30" rows="10"></textarea><br><br>
+      
+      <!-- 리뷰 수정 모달 창 -->
+      <div class="modal fade" id="updateReview" tabindex="-1" aria-labelledby="updateReviewLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
   
-          <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
-          <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
-          <br>
-          <br>
-          <input type="submit" value="작성하기">
-        </form>
+            <div class="modal-header">
+              <h5 class="modal-title" id="updateReviewLabel">리뷰 수정하기</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+  
+            <div class="modal-body">
+              <form>
+                <div class="form-floating mb-3">
+                  <textarea required class="form-control" v-model="content" placeholder="리뷰를 남깁시다." id="reviewContent" style="height: 100px"></textarea>
+                  <label for="reviewContent">내용</label>
+                </div>
+
+                <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
+                <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
+              </form>
+            </div>
+  
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" @click="updateReview" data-bs-dismiss="modal">수정하기</button>
+            </div>
+  
+          </div>
+        </div>
       </div>
     </div>
-    <br><br><br><br><br>
+
+    <!-- 만약 내 리뷰가 존재하지 않으면? 작성하기만 가능 -->
+    <div v-else class="mb-5">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createReview">리뷰 작성하기</button>
+      
+      <!-- 리뷰 작성 모달 창 -->
+      <div class="modal fade" id="createReview" tabindex="-1" aria-labelledby="createReviewLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+  
+            <div class="modal-header">
+              <h5 class="modal-title" id="createReviewLabel">리뷰 작성하기</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+  
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <div class="form-floating mb-3">
+                    <textarea required class="form-control" v-model="content" placeholder="리뷰를 남깁시다." id="reviewContent" style="height: 100px"></textarea>
+                    <label for="reviewContent">내용</label>
+                  </div>
+                  <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
+                  <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
+                </div>
+              </form>
+            </div>
+  
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" @click="createReview" data-bs-dismiss="modal">작성하기</button>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+
     
     <h3>모든 리뷰</h3>
     <div v-if="typeof reviewList === 'string'">
       {{ reviewList }}
     </div>
-    <div v-else>
-      <ReviewSectionItem 
-        v-for="review in reviewList"
-        :key="review.id"
-        :review="review"
-        @edit-review="toggleUpdate"
-      />
+    <div v-else class="container mt-3">
+      <div class="row">
+        <ReviewSectionItem 
+          v-for="review in reviewList"
+          :key="review.id"
+          :review="review"
+        />
+      </div>  
     </div>
   </div>
 </template>
@@ -79,7 +116,6 @@ export default {
     return{
       content: null,
       vote_average: true,
-      isUpdating: false,
     }
   },
   computed: {
@@ -91,17 +127,17 @@ export default {
     },
     myReview(){
       const reviewList = this.$store.state.reviewList;
-      const userpk = this.$store.state.userpk
+      const username = this.$store.state.username;
 
       if (reviewList){
         for(const review of reviewList){
-          if (review.user == userpk){
+          if (review.username == username){
             return review;
           }
         }
       }
       return null;
-    }
+    },
   },
   methods: {
     getReviews(){
@@ -128,7 +164,6 @@ export default {
         username: this.$store.state.username,
       }
       this.$store.dispatch('updateReview', review);
-      this.toggleUpdate();
     },
     deleteReview(){
       const review = {
@@ -140,13 +175,6 @@ export default {
       this.content = null;
       this.vote_average = true;
     },
-    toggleUpdate(){
-      this.isUpdating = !this.isUpdating;
-      if (this.isUpdating){
-        this.content = this.myReview.content;
-        this.vote_average = this.myReview.vote_average;
-      }
-    }
   },
   created(){
     this.getReviews();
