@@ -116,10 +116,7 @@ export default new Vuex.Store({
     // 2-3. 좋아요 한 영화 목록 업데이트
     UPDATE_USER_LIKE(state, userlike){
       state.userlike = userlike;
-      console.log(userlike);
-      console.log(JSON.stringify(userlike));
       sessionStorage.setItem('userlike', JSON.stringify(userlike));
-      console.log(state.userlike);
     },
 
     // 3. 리뷰 관련
@@ -276,8 +273,8 @@ export default new Vuex.Store({
         }
       })
         .then(()=>{
-          context.dispatch('getUserLike', review.username);
           context.dispatch('getReviews', review.movieid);
+          context.dispatch('getUserLike', review.username);
         })
         .catch((error)=>{
           console.log(error);
