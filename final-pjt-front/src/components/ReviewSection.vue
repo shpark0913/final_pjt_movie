@@ -10,7 +10,7 @@
           <p v-if="myReview.vote_average" class="card-subtitle mb-2 text-muted">재밌어요😀</p>
           <p v-else class="card-subtitle mb-2 text-muted">별로에요🤮</p>
           <p class="card-text">{{ myReview.content }}</p>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateReview">리뷰 수정하기</button>
+          <button type="button" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#updateReview">리뷰 수정하기</button>
           <button type="button" class="btn btn-danger" @click="deleteReview">리뷰 삭제하기</button>
         </div>
       </div>
@@ -27,12 +27,13 @@
   
             <div class="modal-body">
               <form>
-                <div class="mb-3">
-                  <label for="reviewContent" class="col-form-label">내용</label>
-                  <input required v-model="content" type="text" class="form-control mb-3" id="reviewContent">
-                  <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
-                  <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
+                <div class="form-floating mb-3">
+                  <textarea required class="form-control" v-model="content" placeholder="리뷰를 남깁시다." id="reviewContent" style="height: 100px"></textarea>
+                  <label for="reviewContent">내용</label>
                 </div>
+
+                <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
+                <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
               </form>
             </div>
   
@@ -47,7 +48,7 @@
     </div>
 
     <!-- 만약 내 리뷰가 존재하지 않으면? 작성하기만 가능 -->
-    <div v-else>
+    <div v-else class="mb-5">
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createReview">리뷰 작성하기</button>
       
       <!-- 리뷰 작성 모달 창 -->
@@ -63,8 +64,10 @@
             <div class="modal-body">
               <form>
                 <div class="mb-3">
-                  <label for="reviewContent" class="col-form-label">내용</label>
-                  <input required v-model="content" type="text" class="form-control mb-3" id="reviewContent">
+                  <div class="form-floating mb-3">
+                    <textarea required class="form-control" v-model="content" placeholder="리뷰를 남깁시다." id="reviewContent" style="height: 100px"></textarea>
+                    <label for="reviewContent">내용</label>
+                  </div>
                   <input required v-model="vote_average" type="radio" name="rate" value="true" id="good"><label for="good">재밌어요😀</label>
                   <input required v-model="vote_average" type="radio" name="rate" value="false" id="bad"><label for="bad">별로에요🤮</label>
                 </div>
@@ -161,7 +164,6 @@ export default {
         username: this.$store.state.username,
       }
       this.$store.dispatch('updateReview', review);
-      this.toggleUpdate();
     },
     deleteReview(){
       const review = {
