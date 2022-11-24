@@ -134,6 +134,7 @@ export default {
       const review = {
         movieid: this.movieid,
         reviewid: this.myReview.id,
+        username: this.$store.state.username,
       }
       this.$store.dispatch('deleteReview', review);
       this.content = null;

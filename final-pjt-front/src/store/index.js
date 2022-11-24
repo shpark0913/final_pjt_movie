@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: {
     // 로그인 관련 Data
     username: sessionStorage.getItem('username'),
+    userlike: sessionStorage.getItem('userlike'),
     userpk: sessionStorage.getItem('userpk'),
     token: sessionStorage.getItem('token'),    // 로그인 토큰
     errors: [],                                // 로그인, 회원가입 실패 시 띄울 오류 문구
@@ -70,9 +71,11 @@ export default new Vuex.Store({
       state.token = userinfo.token;
       state.username = userinfo.username;
       state.userpk = userinfo.userpk;
+      state.userlike = userinfo.userlike;
       sessionStorage.setItem('token', userinfo.token);
       sessionStorage.setItem('username', userinfo.username);
       sessionStorage.setItem('userpk', userinfo.userpk);
+      sessionStorage.setItem('userlike', userinfo.userlike);
       router.push({ name: 'indexView' });
     },
     // 1-2. logout - 토큰을 삭제한 뒤 로그인 페이지로 이동
@@ -80,9 +83,11 @@ export default new Vuex.Store({
       state.token = null;
       state.username = null;
       state.userpk = null;
+      state.userlike = null;
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('username');
       sessionStorage.removeItem('userpk');
+      sessionStorage.removeItem('userlike');
       router.push({ name: 'login' });
     },
     // 1-3. 로그인/회원가입 시 에러메시지 저장
@@ -108,7 +113,14 @@ export default new Vuex.Store({
     GET_MOVIE_DETAIL(state, movie){
       state.movieDetail = movie;
     },
-    // 2-3. 최신 영화 10개?
+    // 2-3. 좋아요 한 영화 목록 업데이트
+    UPDATE_USER_LIKE(state, userlike){
+      state.userlike = userlike;
+      console.log(userlike);
+      console.log(JSON.stringify(userlike));
+      sessionStorage.setItem('userlike', JSON.stringify(userlike));
+      console.log(state.userlike);
+    },
 
     // 3. 리뷰 관련
     // 3-1. 리뷰 리스트
@@ -180,18 +192,38 @@ export default new Vuex.Store({
           }
         })
     },
+    // 1-3. 로그인과 회원가입 시 유저의 정보 추가로 얻기(pk랑 좋아요 한 영화)
     saveUserInfo(context, userinfo){
       axios({
         method: 'GET',
-        url: `${API_URL}/movies/user/${userinfo.username}`
+        url: `${API_URL}/movies/user/${userinfo.username}/profile/`
       })
         .then((response)=>{
           const userInfo = {
             token: userinfo.token,
             username: userinfo.username,
-            userpk: response.data.user_pk,
+            userpk: response.data.userid,
+            userlike: response.data.likes
           }
+          console.log(userInfo.userlike);
+          console.log(typeof(userInfo.userlike));
           context.commit('SAVE_USER_INFO', userInfo)
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+    },
+    // 1-4. user가 리뷰를 create, update, delete 할 때 좋아요 한 영화 목록 다시 가져오기
+    getUserLike(context, username){
+      axios({
+        method: 'GET',
+        url: `${API_URL}/movies/user/${username}/profile/`
+      })
+        .then((response)=>{
+          const userlike = response.data.likes;
+          // console.log(userInfo.userlike);
+          // console.log(typeof(userInfo.userlike));
+          context.commit('UPDATE_USER_LIKE', userlike)
         })
         .catch((error)=>{
           console.log(error);
@@ -244,6 +276,7 @@ export default new Vuex.Store({
         }
       })
         .then(()=>{
+          context.dispatch('getUserLike', review.username);
           context.dispatch('getReviews', review.movieid);
         })
         .catch((error)=>{
@@ -272,6 +305,9 @@ export default new Vuex.Store({
         url: `${API_URL}/movies/review/${review.reviewid}/`
       })
         .then(()=>{
+          context.dispatch('getUserLike', review.username);
+          console.log('삭제');
+          console.log(review.username);
           context.dispatch('getReviews', review.movieid);
         })
         .catch((error)=>{
@@ -294,6 +330,9 @@ export default new Vuex.Store({
       })
         .then((response)=>{
           console.log(response);
+          console.log('리뷰수정');
+          console.log(review.username);
+          context.dispatch('getUserLike', review.username);
           context.dispatch('getReviews', review.movieid);
         })
         .catch((error)=>{
