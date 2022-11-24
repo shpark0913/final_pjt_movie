@@ -5,14 +5,20 @@
       <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="width: 50%" @keyup="filterMovieTitle">
     </form>
 
-    <div v-if="filterMovieList">
-      <p v-for="movie in filterMovieList" :key="`searchMovie-${movie.title}`">{{ movie }}</p>
+    <div v-if="filterMovieList.length" class="row" >
+      <MovieSectionPoster
+        v-for="movie in filterMovieList"
+        :key="`searchMovie-${movie.title}`"
+        :movie="movie"
+      />
     </div>
-
+    <div v-else>검색 결과가 없습니다.</div>
   </div>
 </template>
 
 <script>
+import MovieSectionPoster from '@/components/MovieSectionPoster'
+
 export default {
   name: 'SearchMovieView',
   data(){
@@ -20,6 +26,9 @@ export default {
       searchMovieTitle: '',
       filterMovieList: [],
     }
+  },
+  components: {
+    MovieSectionPoster,
   },
   computed: {
     movieList(){
