@@ -41,7 +41,7 @@ def review(request, movieid):
             serializer.save(movie=movie, user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     elif request.method == 'GET':
-        reviews = get_list_or_404(Review, movie=movieid)
+        reviews = reversed(Review.objects.filter(movie=movieid))
         serializer = ReviewListSerializer(reviews, many=True)
         return Response(serializer.data)
 
