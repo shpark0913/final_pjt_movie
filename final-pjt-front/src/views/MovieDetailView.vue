@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="movie" :style="{ backgroundImage: `url(${backgroundImgPath})` }" id="movieDetailBackground">
+    <div v-if="movie">
       
       <div class="movieDetailCard rounded container px-5">
 
@@ -60,40 +60,9 @@ export default {
 </script>
 
 <style>
-#movieDetailBackground {
-  height: 100vh;
-  width: 100vw;
-  background-repeat : no-repeat;
-  background-size : cover;
-  background-attachment: fixed;
-}
-.movieDetailCard{
-  background-color: white;
-  width: 80%;
-  height: 80%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  overflow-y: scroll;
-}
+
 #moviePoster{
   width: 100%;
 }
 
-
-.container::-webkit-scrollbar {
-  width: 10px;
-}
-.container::-webkit-scrollbar-thumb {
-  background-color: #999a9b;
-  border-radius: 10px;
-  background-clip: padding-box;
-  border: 2px solid transparent;
-}
-.container::-webkit-scrollbar-track {
-  background-color: rgb(235, 235, 235);
-  border-radius: 10px;
-  box-shadow: inset 0px 0px 5px white;
-}
 </style>

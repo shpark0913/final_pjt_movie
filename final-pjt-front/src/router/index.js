@@ -7,7 +7,7 @@ import SignUpView from '@/views/SignUpView'
 import LogInView from '@/views/LogInView'
 import MovieDetailView from '@/views/MovieDetailView'
 import ProfileView from '@/views/ProfileView'
-// import ChooseGenreView from '@/views/ChooseGenreView'
+import SearchMovieView from '@/views/SearchMovieView'
 import NotFoundView from '@/views/NotFoundView'
 
 
@@ -64,16 +64,16 @@ const routes = [
       else { next({ name: 'login' }) }
     }
   },
-  // {
-  //   path: '/choosegenre',
-  //   name: 'chooseGenre',
-  //   component: ChooseGenreView,
-  //   beforeEnter(to, from, next){
-  //     const isLoginned = store.getters.isLogin;
-  //     if (isLoginned){ next() }
-  //     else { next({ name: 'login' }) }
-  //   }
-  // },
+  {
+    path: '/search',
+    name: 'searchMovie',
+    component: SearchMovieView,
+    beforeEnter(to, from, next){
+      const isLoginned = store.getters.isLogin;
+      if (isLoginned){ next() }
+      else { next({ name: 'login' }) }
+    }
+  },
   // {
   //   path: '/about',
   //   name: 'about',

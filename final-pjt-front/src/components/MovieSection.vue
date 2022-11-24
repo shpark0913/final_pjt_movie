@@ -1,7 +1,6 @@
 <template>
   <div>
 
-    <div class="py-5">
     <h1 class="mb-0">영화</h1>
     
     <div class="row">
@@ -14,7 +13,6 @@
 
     </div>
 
-  </div>
 </template>
 
 <script>

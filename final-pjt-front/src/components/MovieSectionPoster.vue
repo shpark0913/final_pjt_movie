@@ -1,16 +1,16 @@
 <template>
 
-  <div class="col-12 col-md-4 mb-3 pointer">
+  <div class="col-12 col-md-3 mb-3 pointer">
 
-    <div class="hover text-white rounded" @click="movieDetail">
+    <div class="card" @click="movieDetail">
       <img
         :src=" `https://www.themoviedb.org/t/p/original${this.movie?.poster_path}`"
+        class="card-img-top"
       >
-      <div class="hover-overlay"></div>
-      <div class="hover-content px-5 py-4">
-        <h3 class="hover-title mb-0">{{ movie.title}}</h3>
-        <p class="hover-description mb-0">⭐별점 | {{ movie.vote_average }}</p>
-        <p class="hover-description mb-0">📆개봉 | {{ movie.release_date }}</p>
+      <div class="card-body">
+        <h5 class="card-title">{{ movie.title}}</h5>
+        <p class="card-text">⭐별점 | {{ movie.vote_average }}</p>
+        <p class="card-text">📆개봉 | {{ movie.release_date }}</p>
       </div>
     </div>
 
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style>
-.hover {
+/* .hover {
   overflow: hidden;
   position: relative;
   padding-bottom: 150%;
@@ -69,8 +69,8 @@ export default {
 .hover-content {
   position: absolute;
   bottom: 0;
-  left: 0;
-  /* z-index: 90; */
+  left: 0; */
+  /* z-index: 90;
   transition: all 0.4s;
 }
 
@@ -98,5 +98,5 @@ export default {
 .hover:hover .hover-description {
   opacity: 1;
   transform: none;
-}
+} */
 </style>
