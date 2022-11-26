@@ -1,26 +1,30 @@
-## 221115
+# 🗓️221115
 
 ### 회원가입 구현
 
-- SignUpView의 form 태그를 통해 사용자의 정보를 받는다. 우선은 username과 password1, 그리고 비밀번호 확인을 위핸 password2 총 3가지 input을 받는다. 이 값은 v-model directives를 이용해 data와 연결한다.
-
-- submit 버튼을 누르면 제출 이벤트를 막는다(prevent), SignUp 함수는 vuex의 Actions의 signUp 함수를 실행한다. 이 때 사용자가 작성한 값을 payload로 보낸다.
-
-- signUp 함수에서는 axios를 통해 AJAX 통신을 진행한다.
+- SignUpView의 form 태그를 통해 사용자의 정보 입력받기.
   
-  서버의 url로 사용자의 값을 보내고, 통신이 성공적으로 이루어지면 사용자의 토큰을 저장한다. -> data가 바뀌므로 mutations로 넘어간다.
+  username과 password1, 비밀번호 확인을 위한 password2 총 3가지 input을 받는다. 이 값은 v-model directives를 이용해 data와 연결한다.
+
+- submit 버튼을 누르면 우선 default event를 막는다(prevent) `submit.prevent="signUp"`
+  
+  signUp 함수에서는 위의 username과 password1, password2를 객체로 만들어 actions 실행.
+
+- vuex의 signUp 함수에서는 axios를 통해 AJAX 통신을 진행한다.
+  
+  통신이 성공적으로 이루어지면 사용자의 토큰을 저장한다. -> data가 바뀌므로 mutations로 넘어간다.
   
   통신에 실패하면 error를 출력한다.
 
-## 221116
+# 🗓️221116
 
 ### 로그인 구현/에러메시지 출력
 
 - 로그인도 회원가입과 비슷한 로직임
   
-  - username과 password를 받아서 서버 측에 보낸다, 회원이 맞으면 토큰을 담아 response, 기존의 회원이 아니면 에러 출력.
+  - username과 password를 받아서 서버에 request, 회원이 맞으면 서버에서 토큰을 response, 기존의 회원이 아니면 에러 출력.
 
-- 에러 메시지를 추출하고자 함!
+- 에러 메시지를 추출해 로그인/회원가입 창에 보여주도록  <= 사용자에게 어느 부분이 잘못됐는지 인지할 수 있도록!
   
   - error의 response의 data 객체로 에러메시지가 들어온다.
   
